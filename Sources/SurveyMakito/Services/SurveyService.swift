@@ -17,6 +17,11 @@ public final class SurveyService: ObservableObject {
 
     public var cancellables: Set<AnyCancellable> = []
 
+    public init(surveys: [Survey] = [], cancellables: Set<AnyCancellable> = []) {
+        self.surveys = surveys
+        self.cancellables = cancellables
+    }
+
     @MainActor
     public func fetch() async throws {
         surveys = try await FirestoreManager.query(path: SurveyPath.Firestore.surveys, queryItems: [

@@ -8,9 +8,16 @@
 import SwiftUI
 
 public struct SurveyView: View {
-    @EnvironmentObject public var surveyService: SurveyService
+    @State public var surveyService: SurveyService
     @State public var survey: Survey
     @State public var index: Int = 0
+
+    public init(surveyService: SurveyService = SurveyService(), survey: Survey, index: Int = 0) {
+        self.surveyService = surveyService
+        self.survey = survey
+        self.index = index
+    }
+
     public var body: some View {
         SurveyWrap(color: .blue) {
             ScrollView {
@@ -22,7 +29,7 @@ public struct SurveyView: View {
                         case .multipleChoiceQuestion:
                             MultipleChoiceQuestionView(question: question)
                         case .inlineQuestionGroup:
-                            let mcg = InlineMultipleChoiceQuestionGroup()
+                            // let mcg = InlineMultipleChoiceQuestionGroup()
                             InlineMultipleChoiceQuestionGroupView(question: question)
                         case .contactForm:
                             ContactFormQuestionView(question: question)

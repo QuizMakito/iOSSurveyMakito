@@ -110,7 +110,7 @@ public struct MultipleChoiceButton: View {
 }
 
 public struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
-    static let question: SurveyQuestion = .init(
+    public static let question: SurveyQuestion = .init(
         uid: "q1",
         title: "What's your favorite color?",
         tag: "color",
