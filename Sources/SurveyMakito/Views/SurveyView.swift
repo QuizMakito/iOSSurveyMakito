@@ -1,12 +1,71 @@
-import XCTest
-import XCTest
-import FirebaseFirestore
-@testable import SurveyMakito
+//
+//  SwiftUIView 2.swift
+//  
+//
+//  Created by Kris Steigerwald on 3/15/23.
+//
 
-class SurveyTests: XCTestCase {
-    // Survey Questions
+import SwiftUI
 
-    let multipleChoiceQuestion1 = MultipleChoiceQuestion(
+struct SurveyView: View {
+    @EnvironmentObject var surveyService: SurveyService
+    @State public var survey: Survey
+    @State public var index: Int = 0
+    var body: some View {
+        SurveyWrap(color: .blue) {
+            ScrollView {
+                LazyVStack(spacing: 20) {
+                    ForEach(survey.questions ?? []) { question in
+                        switch question.type {
+                        case .binaryChoice:
+                            BinaryQuestionView(question: question)
+                        case .multipleChoiceQuestion:
+                            MultipleChoiceQuestionView(question: question)
+                        case .inlineQuestionGroup:
+                            let mcg = InlineMultipleChoiceQuestionGroup()
+                            InlineMultipleChoiceQuestionGroupView(question: question)
+                        case .contactForm:
+                            ContactFormQuestionView(question: question)
+                        case .commentsForm:
+                            CommentsFormQuestionView(question: question)
+                        default:
+                            EmptyView()
+                        }
+                    }
+                }
+                .padding()
+            }
+        } footer: {
+            HStack {
+                Button(action: {
+                    index += 1
+                }, label: {
+                    Text("Next")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                })
+                
+                Button(action: {
+                    // surveyService.submitSurvey()
+                }) {
+                    Text("Submit Survey")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                }
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+                .padding(.horizontal)
+            }
+        }
+        .navigationBarTitle("Survey", displayMode: .inline)
+    }
+}
+
+extension SurveyView {
+    static var multipleChoiceQuestion1 = MultipleChoiceQuestion(
         uid: "001",
         choices: [
             MultipleChoiceResponse(uid: "001a", text: "Option A"),
@@ -16,7 +75,7 @@ class SurveyTests: XCTestCase {
         allowsMultipleSelection: false
     )
 
-    let binaryQuestion1 = BinaryQuestion(
+    static var binaryQuestion1 = BinaryQuestion(
         uid: "002",
         choices: [
             MultipleChoiceResponse(uid: "002a", text: "Yes"),
@@ -26,7 +85,7 @@ class SurveyTests: XCTestCase {
         autoAdvanceOnChoice: true
     )
 
-    let contactFormQuestion1 = ContactFormQuestion(
+    static var contactFormQuestion1 = ContactFormQuestion(
         uid: "003",
         required: true,
         choices: [
@@ -42,7 +101,7 @@ class SurveyTests: XCTestCase {
         feedback: "This is some feedback."
     )
 
-    let inlineMultipleChoiceQuestionGroup1 = InlineMultipleChoiceQuestionGroup(
+    static var inlineMultipleChoiceQuestionGroup1 = InlineMultipleChoiceQuestionGroup(
         uid: "004",
         choices: [
             MultipleChoiceResponse(uid: "004a", text: "Option A"),
@@ -72,7 +131,7 @@ class SurveyTests: XCTestCase {
         ]
     )
 
-    let commentsFormQuestion1 = CommentsFormQuestion(
+    static var commentsFormQuestion1 = CommentsFormQuestion(
         uid: "005",
         required: false,
         choices: [
@@ -85,7 +144,7 @@ class SurveyTests: XCTestCase {
 
     // Survey
 
-    let survey = Survey(
+    static var survey = Survey(
         uid: "abcd-1234",
         questions: [
             SurveyQuestion(
@@ -187,19 +246,14 @@ class SurveyTests: XCTestCase {
                    )
             ])
 
-    func testSurveyEncodingAndDecoding() {
-        let expectedSurvey = Survey(id: "123", uid: "456", questions: [
-            SurveyQuestion(uid: "777", title: "foo bar", tag: "tagit")
-        ])
-        let encoder = Firestore.Encoder()
-        let decoder = Firestore.Decoder()
+    static var example: SurveyView {
+        return SurveyView(survey: survey)
+    }
+}
 
-        do {
-            let data = try encoder.encode(expectedSurvey)
-            let decodedSurvey = try decoder.decode(Survey.self, from: data)
-            XCTAssertEqual(expectedSurvey.uid, decodedSurvey.uid)
-        } catch {
-            XCTFail("Encoding or decoding of Survey struct failed with error: \(error)")
-        }
+struct SurveyView_Previews: PreviewProvider {
+    static var previews: some View {
+        SurveyView.example
+            .environmentObject(SurveyService())
     }
 }

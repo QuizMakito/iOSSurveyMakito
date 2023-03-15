@@ -4,3 +4,4 @@ public struct SurveyMakito {
     public init() {
     }
 }
+
