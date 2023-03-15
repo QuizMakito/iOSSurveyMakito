@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct BinaryQuestionView: View {
+public struct BinaryQuestionView: View {
     @EnvironmentObject var surveyService: SurveyService
     let question: SurveyQuestion
     @State var checked: Bool = false
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(question.title)
                 .font(.headline)

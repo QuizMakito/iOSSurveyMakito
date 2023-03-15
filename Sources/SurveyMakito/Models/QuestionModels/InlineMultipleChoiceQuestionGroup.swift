@@ -17,7 +17,7 @@ public struct InlineMultipleChoiceQuestionGroup: Codable, Firestorable, Hashable
     @DefaultFalse public var allowsMultipleSelection = false
     @DefaultMultipleChoiceQuestion public var questions: [MultipleChoiceQuestion]?
 
-    init(
+    public init(
         uid: String? = nil,
         choices: [MultipleChoiceResponse]? = [],
         allowsMultipleSelection: Bool = false,

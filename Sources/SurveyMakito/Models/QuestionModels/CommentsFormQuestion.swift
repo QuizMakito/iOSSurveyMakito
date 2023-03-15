@@ -22,7 +22,7 @@ public struct CommentsFormQuestion: Codable, Firestorable, Hashable {
     @DefaultEmptyString public var emailAddress: String = ""
     @DefaultEmptyString public var feedback: String = ""
 
-    init(
+    public init(
         uid: String? = nil,
         required: Bool = false,
         choices: [MultipleChoiceResponse]? = [],

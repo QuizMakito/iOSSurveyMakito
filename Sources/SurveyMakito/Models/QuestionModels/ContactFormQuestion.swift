@@ -26,7 +26,7 @@ public struct ContactFormQuestion: Codable, Firestorable, Hashable {
     @DefaultEmptyString public var phoneNumber: String = ""
     @DefaultEmptyString public var feedback: String = ""
 
-    init(
+    public init(
         uid: String? = nil,
         required: Bool = false,
         visibilityLogic: VisibilityLogic? = nil,

@@ -20,7 +20,7 @@ public struct BinaryQuestion: Codable, Firestorable, Hashable {
     @DefaultFalse public var allowsMultipleSelection = false
     @DefaultFalse public var autoAdvanceOnChoice: Bool = false
 
-    init(
+    public init(
         uid: String? = nil,
         required: Bool = false,
         visibilityLogic: VisibilityLogic? = nil,

@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct SurveyView: View {
-    @EnvironmentObject var surveyService: SurveyService
+public struct SurveyView: View {
+    @EnvironmentObject public var surveyService: SurveyService
     @State public var survey: Survey
     @State public var index: Int = 0
-    var body: some View {
+    public var body: some View {
         SurveyWrap(color: .blue) {
             ScrollView {
                 LazyVStack(spacing: 20) {
@@ -64,7 +64,7 @@ struct SurveyView: View {
     }
 }
 
-extension SurveyView {
+public extension SurveyView {
     static var multipleChoiceQuestion1 = MultipleChoiceQuestion(
         uid: "001",
         choices: [

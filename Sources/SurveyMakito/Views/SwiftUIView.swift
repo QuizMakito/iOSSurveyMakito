@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SurveySplashView: View {
-    var body: some View {
+public struct SurveySplashView: View {
+    public var body: some View {
         SurveyWrap(color: .pink) {
             Text("hello...")
         } footer: {
@@ -17,12 +17,12 @@ struct SurveySplashView: View {
     }
 }
 
-struct SurveyWrap<C: View, F: View>: View {
-    var color: Color?
-    var bgImage: Image?
-    var content: () -> C
-    var footer: () -> F
-    var body: some View {
+public struct SurveyWrap<C: View, F: View>: View {
+    public var color: Color?
+    public var bgImage: Image?
+    public var content: () -> C
+    public var footer: () -> F
+    public var body: some View {
         ZStack {
             background
             VStack {
@@ -37,7 +37,7 @@ struct SurveyWrap<C: View, F: View>: View {
         .environmentObject(SurveyService())
     }
 
-    var background: some View {
+    public var background: some View {
         if let color = color {
             return color.ignoresSafeArea()
         }

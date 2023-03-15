@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct InlineMultipleChoiceQuestionGroupView: View {
+public struct InlineMultipleChoiceQuestionGroupView: View {
     let question: SurveyQuestion // InlineMultipleChoiceQuestionGroup
     @EnvironmentObject var surveyService: SurveyService
     @State var isSelected: Bool = false
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             if let question = question.inlineMultipleChoice {
                 if let choices = question.choices {
@@ -50,11 +50,11 @@ struct InlineMultipleChoiceQuestionGroupView: View {
     }
 }
 
-struct InlineMultipleChoiceQuestionView: View {
+public struct InlineMultipleChoiceQuestionView: View {
     let question: MultipleChoiceQuestion
     @EnvironmentObject var surveyService: SurveyService
     @Binding var isSelected: Bool
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(question.choices ?? []) { choice in
                 MultipleChoiceButton(
@@ -83,13 +83,13 @@ struct InlineMultipleChoiceQuestionView: View {
     }
 }
 
-struct MultipleChoiceButton: View {
+public struct MultipleChoiceButton: View {
     let choice: MultipleChoiceResponse
     let isSelected: Bool
     let allowsMultipleSelection: Bool
     let onTap: () -> Void
 
-    var body: some View {
+    public var body: some View {
         Button(action: onTap) {
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
@@ -109,7 +109,7 @@ struct MultipleChoiceButton: View {
     }
 }
 
-struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
+public struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
     static let question: SurveyQuestion = .init(
         uid: "q1",
         title: "What's your favorite color?",
@@ -157,7 +157,7 @@ struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
         )
     )
 
-    static var previews: some View {
+    public static var previews: some View {
         EmptyView()
     }
 }

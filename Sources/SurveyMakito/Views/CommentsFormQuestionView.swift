@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CommentsFormQuestionView: View {
+public struct CommentsFormQuestionView: View {
     @EnvironmentObject var surveyService: SurveyService
 
     let question: SurveyQuestion
@@ -15,7 +15,7 @@ struct CommentsFormQuestionView: View {
     @State private var feedback: String = ""
     @State private var emailAddress: String = ""
 
-    var body: some View {
+    public var body: some View {
         VStack {
             VStack(alignment: .leading, spacing: 16) {
                 Text("Please enter your feedback:")
@@ -55,7 +55,7 @@ struct CommentsFormQuestionView: View {
         // Submit feedback to server
     }
 }
-extension CommentsFormQuestionView {
+public extension CommentsFormQuestionView {
     static let commentsQuestion = CommentsFormQuestion(
         uid: "feedback",
         choices: [

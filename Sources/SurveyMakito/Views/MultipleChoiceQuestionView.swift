@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct MultipleChoiceQuestionView: View {
-    @EnvironmentObject var surveyService: SurveyService
+public struct MultipleChoiceQuestionView: View {
+    @EnvironmentObject public var surveyService: SurveyService
 
-    let question: SurveyQuestion
+    public let question: SurveyQuestion
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
                 .font(.title2)

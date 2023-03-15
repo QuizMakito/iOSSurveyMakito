@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct ContactFormQuestionView: View {
-    @EnvironmentObject var surveyService: SurveyService
+public struct ContactFormQuestionView: View {
+    @EnvironmentObject public var surveyService: SurveyService
 
-    let question: SurveyQuestion
+    public let question: SurveyQuestion
 
     @State private var selectedChoices: [String: String] = [:]
     @State private var emailAddress: String = ""
@@ -19,7 +19,7 @@ struct ContactFormQuestionView: View {
     @State private var phoneNumber: String = ""
     @State private var feedback: String = ""
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             /*
              if let choices = question.choices {
@@ -108,7 +108,7 @@ struct ContactFormQuestionView: View {
     }
 }
 
-extension ContactFormQuestionView {
+public extension ContactFormQuestionView {
     static var contactQuestion = ContactFormQuestion(
         uid: "contact_form_question",
         required: true,

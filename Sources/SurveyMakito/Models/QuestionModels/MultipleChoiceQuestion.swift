@@ -18,7 +18,7 @@ public struct MultipleChoiceQuestion: Codable, Firestorable, Identifiable, Hasha
     @DefaultMultipleChoiceResponse public var choices: [MultipleChoiceResponse]?
     @DefaultFalse public var allowsMultipleSelection = false
 
-    init(
+    public init(
         uid: String? = nil,
         choices: [MultipleChoiceResponse]? = nil,
         allowsMultipleSelection: Bool = false

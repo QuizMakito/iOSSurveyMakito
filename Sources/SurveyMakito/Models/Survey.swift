@@ -16,7 +16,7 @@ public struct Survey: Codable, Firestorable, Identifiable, Hashable {
     @DefaultEmptyString public var uid: String
     @DefaultEmptySurveyQuestions public var questions: [SurveyQuestion]?
 
-    init(
+    public init(
         id: String? = nil,
         uid: String? = nil,
         questions: [SurveyQuestion] = []
