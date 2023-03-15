@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/13/23.
 //
@@ -44,7 +44,6 @@ struct SurveyWrap<C: View, F: View>: View {
         return Color.white.ignoresSafeArea()
     }
 }
-
 
 struct SurveySplashView_Previews: PreviewProvider {
     static var previews: some View {

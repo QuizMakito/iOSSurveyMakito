@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/13/23.
 //
@@ -58,16 +58,14 @@ public struct DefaultDateStrategy: DefaultCodableStrategy {
 /// `@DefaultTimestamp` decodes Timestamps and defaults the value to now if the Decoder is unable to decode the value.
 public typealias DefaultTimestamp = DefaultCodable<DefaultDateStrategy>
 
-
 public struct DefaultDictionaryStrategy: DefaultCodableStrategy {
-    public static var defaultValue: [String:String] { return [:] }
+    public static var defaultValue: [String: String] { return [:] }
 }
 
 /// Decodes Dictionary defaulting to [:] if applicable
 ///
 /// `@DefaultDictionary` decodes Timestamps and defaults the value to now if the Decoder is unable to decode the value.
 public typealias DefaultDictionary = DefaultCodable<DefaultDictionaryStrategy>
-
 
 public struct DefaultLogicTypeStrategy: DefaultCodableStrategy {
     public static var defaultValue: LogicType? { return nil }

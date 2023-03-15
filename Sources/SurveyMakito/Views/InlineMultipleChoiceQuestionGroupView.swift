@@ -1,6 +1,6 @@
 //
 //  SwiftUIView 2.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/15/23.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InlineMultipleChoiceQuestionGroupView: View {
-    let question: SurveyQuestion //InlineMultipleChoiceQuestionGroup
+    let question: SurveyQuestion // InlineMultipleChoiceQuestionGroup
     @EnvironmentObject var surveyService: SurveyService
     @State var isSelected: Bool = false
     var body: some View {
@@ -39,7 +39,7 @@ struct InlineMultipleChoiceQuestionGroupView: View {
                     ForEach(questions) { question in
                         InlineMultipleChoiceQuestionView(question: question, isSelected: $isSelected)
                     }
-            }
+                }
             }
 
         }
@@ -63,14 +63,14 @@ struct InlineMultipleChoiceQuestionView: View {
                     allowsMultipleSelection: question.allowsMultipleSelection,
                     onTap: {
                         /*
-                        surveyService.setMultipleChoiceResponse(
-                            uid: choice.uid,
-                            in: question.uid,
-                            selected: !surveyService.getMultipleChoiceResponse(
-                                uid: choice.uid,
-                                in: question.uid
-                            )
-                        )
+                         surveyService.setMultipleChoiceResponse(
+                         uid: choice.uid,
+                         in: question.uid,
+                         selected: !surveyService.getMultipleChoiceResponse(
+                         uid: choice.uid,
+                         in: question.uid
+                         )
+                         )
                          */
                     }
                 )
@@ -158,6 +158,6 @@ struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
     )
 
     static var previews: some View {
-      EmptyView()
+        EmptyView()
     }
 }

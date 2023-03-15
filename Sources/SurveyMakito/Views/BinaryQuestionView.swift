@@ -1,6 +1,6 @@
 //
 //  SwiftUIView 2.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/15/23.
 //
@@ -20,7 +20,7 @@ struct BinaryQuestionView: View {
             if let choices = question.binaryQuestion?.choices {
                 ForEach(choices, id: \.uid) { choice in
                     Button(action: {
-                        //surveyService.setBinaryQuestionResponse(uid: question.uid, choiceUid: choice.uid)
+                        // surveyService.setBinaryQuestionResponse(uid: question.uid, choiceUid: choice.uid)
                     }) {
                         HStack {
                             Text(choice.text)

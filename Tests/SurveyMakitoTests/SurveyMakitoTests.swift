@@ -1,5 +1,4 @@
 import XCTest
-import XCTest
 import FirebaseFirestore
 @testable import SurveyMakito
 
@@ -170,22 +169,22 @@ class SurveyTests: XCTestCase {
                 )
             ),
             SurveyQuestion(
-                       uid: "FEEDBACK_QUESTION",
-                       title: "What do you think of our app?",
-                       type: .commentsForm,
-                       commentsFormQuetion: CommentsFormQuestion(
-                           uid: "FEEDBACK_QUESTION",
-                           choices: [
-                               MultipleChoiceResponse(uid: "EXCELLENT_RESPONSE", text: "Excellent"),
-                               MultipleChoiceResponse(uid: "GOOD_RESPONSE", text: "Good"),
-                               MultipleChoiceResponse(uid: "FAIR_RESPONSE", text: "Fair"),
-                               MultipleChoiceResponse(uid: "POOR_RESPONSE", text: "Poor")
-                           ],
-                           allowsMultipleSelection: true,
-                           emailAddress: "feedback@example.com"
-                       )
-                   )
-            ])
+                uid: "FEEDBACK_QUESTION",
+                title: "What do you think of our app?",
+                type: .commentsForm,
+                commentsFormQuetion: CommentsFormQuestion(
+                    uid: "FEEDBACK_QUESTION",
+                    choices: [
+                        MultipleChoiceResponse(uid: "EXCELLENT_RESPONSE", text: "Excellent"),
+                        MultipleChoiceResponse(uid: "GOOD_RESPONSE", text: "Good"),
+                        MultipleChoiceResponse(uid: "FAIR_RESPONSE", text: "Fair"),
+                        MultipleChoiceResponse(uid: "POOR_RESPONSE", text: "Poor")
+                    ],
+                    allowsMultipleSelection: true,
+                    emailAddress: "feedback@example.com"
+                )
+            )
+        ])
 
     func testSurveyEncodingAndDecoding() {
         let expectedSurvey = Survey(id: "123", uid: "456", questions: [

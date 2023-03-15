@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/13/23.
 //
@@ -10,7 +10,6 @@ import BetterCodable
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseService
-
 
 public struct ContactFormQuestion: Codable, Firestorable, Hashable {
 

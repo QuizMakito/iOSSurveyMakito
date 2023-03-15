@@ -1,6 +1,6 @@
 //
 //  SwiftUIView 2.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/15/23.
 //
@@ -22,17 +22,17 @@ struct ContactFormQuestionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             /*
-            if let choices = question.choices {
+             if let choices = question.choices {
 
 
-                Text(question.title)
-                    .font(.headline)
+             Text(question.title)
+             .font(.headline)
 
-                MultipleChoiceResponseListView(
-                    choices: question.choices,
-                    selectedChoices: $selectedChoices
+             MultipleChoiceResponseListView(
+             choices: question.choices,
+             selectedChoices: $selectedChoices
 
-            }
+             }
              )*/
             Text("Email Address")
                 .font(.headline)
@@ -60,72 +60,70 @@ struct ContactFormQuestionView: View {
                 .frame(minHeight: 100)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
 
-
         }
         .padding()
-        .onChange(of: selectedChoices) { selected in
+        .onChange(of: selectedChoices) { _ in
             /*
-            surveyService.updateContactFormQuestionResponse(
-                uid: question.uid,
-                choices: selected
-            )*/
+             surveyService.updateContactFormQuestionResponse(
+             uid: question.uid,
+             choices: selected
+             )*/
         }
-        .onChange(of: emailAddress) { newValue in
-             /*
-            surveyService.updateContactFormQuestionResponse(
-                uid: question.uid,
-                emailAddress: newValue
-            )*/
+        .onChange(of: emailAddress) { _ in
+            /*
+             surveyService.updateContactFormQuestionResponse(
+             uid: question.uid,
+             emailAddress: newValue
+             )*/
         }
-        .onChange(of: name) { newValue in
-              /*
-            surveyService.updateContactFormQuestionResponse(
-                uid: question.uid,
-                name: newValue
-            )*/
+        .onChange(of: name) { _ in
+            /*
+             surveyService.updateContactFormQuestionResponse(
+             uid: question.uid,
+             name: newValue
+             )*/
         }
-        .onChange(of: company) { newValue in
-               /*
-            surveyService.updateContactFormQuestionResponse(
-                uid: question.uid,
-                company: newValue
-            )*/
+        .onChange(of: company) { _ in
+            /*
+             surveyService.updateContactFormQuestionResponse(
+             uid: question.uid,
+             company: newValue
+             )*/
         }
-        .onChange(of: phoneNumber) { newValue in
-                /*
-            surveyService.updateContactFormQuestionResponse(
-                uid: question.uid,
-                phoneNumber: newValue
-            )*/
+        .onChange(of: phoneNumber) { _ in
+            /*
+             surveyService.updateContactFormQuestionResponse(
+             uid: question.uid,
+             phoneNumber: newValue
+             )*/
         }
-        .onChange(of: feedback) { newValue in
-                 /*
-            surveyService.updateContactFormQuestionResponse(
-                uid: question.uid,
-                feedback: newValue
-            )
-                  */
+        .onChange(of: feedback) { _ in
+            /*
+             surveyService.updateContactFormQuestionResponse(
+             uid: question.uid,
+             feedback: newValue
+             )
+             */
         }
     }
 }
 
-
 extension ContactFormQuestionView {
     static var contactQuestion = ContactFormQuestion(
-            uid: "contact_form_question",
-            required: true,
-            choices: [
-                MultipleChoiceResponse(uid: "help", text: "I need help with the app"),
-                MultipleChoiceResponse(uid: "general", text: "I have a general question"),
-                MultipleChoiceResponse(uid: "feedback", text: "I have feedback"),
-                MultipleChoiceResponse(uid: "other", text: "Other")
-            ],
-            emailAddress: "example@example.com",
-            name: "John Doe",
-            company: "Example Co.",
-            phoneNumber: "+1 (555) 555-5555",
-            feedback: "This is some feedback."
-        )
+        uid: "contact_form_question",
+        required: true,
+        choices: [
+            MultipleChoiceResponse(uid: "help", text: "I need help with the app"),
+            MultipleChoiceResponse(uid: "general", text: "I have a general question"),
+            MultipleChoiceResponse(uid: "feedback", text: "I have feedback"),
+            MultipleChoiceResponse(uid: "other", text: "Other")
+        ],
+        emailAddress: "example@example.com",
+        name: "John Doe",
+        company: "Example Co.",
+        phoneNumber: "+1 (555) 555-5555",
+        feedback: "This is some feedback."
+    )
     static var example: ContactFormQuestionView {
         let question = SurveyQuestion(
             contactFormQuestion: contactQuestion

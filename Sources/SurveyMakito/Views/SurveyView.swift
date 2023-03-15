@@ -1,6 +1,6 @@
 //
 //  SwiftUIView 2.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/15/23.
 //
@@ -45,7 +45,7 @@ struct SurveyView: View {
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                 })
-                
+
                 Button(action: {
                     // surveyService.submitSurvey()
                 }) {
@@ -229,22 +229,22 @@ extension SurveyView {
                 )
             ),
             SurveyQuestion(
-                       uid: "FEEDBACK_QUESTION",
-                       title: "What do you think of our app?",
-                       type: .commentsForm,
-                       commentsFormQuetion: CommentsFormQuestion(
-                           uid: "FEEDBACK_QUESTION",
-                           choices: [
-                               MultipleChoiceResponse(uid: "EXCELLENT_RESPONSE", text: "Excellent"),
-                               MultipleChoiceResponse(uid: "GOOD_RESPONSE", text: "Good"),
-                               MultipleChoiceResponse(uid: "FAIR_RESPONSE", text: "Fair"),
-                               MultipleChoiceResponse(uid: "POOR_RESPONSE", text: "Poor")
-                           ],
-                           allowsMultipleSelection: true,
-                           emailAddress: "feedback@example.com"
-                       )
-                   )
-            ])
+                uid: "FEEDBACK_QUESTION",
+                title: "What do you think of our app?",
+                type: .commentsForm,
+                commentsFormQuetion: CommentsFormQuestion(
+                    uid: "FEEDBACK_QUESTION",
+                    choices: [
+                        MultipleChoiceResponse(uid: "EXCELLENT_RESPONSE", text: "Excellent"),
+                        MultipleChoiceResponse(uid: "GOOD_RESPONSE", text: "Good"),
+                        MultipleChoiceResponse(uid: "FAIR_RESPONSE", text: "Fair"),
+                        MultipleChoiceResponse(uid: "POOR_RESPONSE", text: "Poor")
+                    ],
+                    allowsMultipleSelection: true,
+                    emailAddress: "feedback@example.com"
+                )
+            )
+        ])
 
     static var example: SurveyView {
         return SurveyView(survey: survey)

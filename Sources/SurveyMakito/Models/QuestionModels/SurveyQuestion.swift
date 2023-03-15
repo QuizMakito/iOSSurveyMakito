@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/13/23.
 //
@@ -40,7 +40,6 @@ public struct SurveyQuestion: Codable, Hashable, Identifiable {
 
     @DefaultEmptyBinaryQuestion
     public var binaryQuestion: BinaryQuestion?
-    
 
     public init(uid: String? = nil,
                 title: String? = nil,

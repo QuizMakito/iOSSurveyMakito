@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/13/23.
 //
@@ -28,7 +28,6 @@ public struct MultipleChoiceQuestion: Codable, Firestorable, Identifiable, Hasha
         self.allowsMultipleSelection = allowsMultipleSelection
     }
 }
-
 
 public struct MultipleChoiceResponse: Codable, Firestorable, Identifiable, Hashable {
     public var id: String = UUID().uuidString

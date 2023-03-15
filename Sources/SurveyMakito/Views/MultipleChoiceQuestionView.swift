@@ -1,6 +1,6 @@
 //
 //  SwiftUIView 2.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/15/23.
 //
@@ -27,13 +27,13 @@ struct MultipleChoiceQuestionView: View {
                         }, label: {
                             HStack {
                                 /*
-                                if surveyService.getMultipleChoiceQuestionResponse(uid: multipleChoiceQuestion.uid) == choice.uid {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(.white)
-                                } else {
-                                    Image(systemName: "circle")
-                                        .foregroundColor(.white)
-                                }*/
+                                 if surveyService.getMultipleChoiceQuestionResponse(uid: multipleChoiceQuestion.uid) == choice.uid {
+                                 Image(systemName: "checkmark.circle.fill")
+                                 .foregroundColor(.white)
+                                 } else {
+                                 Image(systemName: "circle")
+                                 .foregroundColor(.white)
+                                 }*/
 
                                 Text(choice.text)
                             }

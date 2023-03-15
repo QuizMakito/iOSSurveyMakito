@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/13/23.
 //
@@ -12,12 +12,10 @@ import FirebaseFirestoreSwift
 import BetterCodable
 import Combine
 
-
 public final class SurveyService: ObservableObject {
     @Published var surveys: [Survey]  = [Survey]()
 
     public var cancellables: Set<AnyCancellable> = []
-
 
     @MainActor
     public func fetch() async throws {
@@ -26,4 +24,3 @@ public final class SurveyService: ObservableObject {
         ])
     }
 }
-
