@@ -9,8 +9,10 @@ import SwiftUI
 import Combine
 
 struct PreviewStruct: View {
+
     @State var index: Int = 0
     @State public var survey: Survey
+
     var body: some View {
         VStack {
             SurveyView(survey: $survey, index: $index)
@@ -22,6 +24,7 @@ struct PreviewStruct: View {
 }
 
 public struct SurveyView: View {
+
     @State public var surveyService: SurveyService
     @Binding public var survey: Survey
     @Binding public var index: Int
@@ -64,49 +67,57 @@ public struct SurveyView: View {
             }
         } footer: {
             HStack {
-                if index > 0 {
-                    Button(action: {
-                        index -= 1
-                    }, label: {
-                        Text("back")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                    })
-                } else {
-                    Spacer()
-                }
-
-                Button(action: {
-                    // surveyService.submitSurvey()
-                }) {
-                    Text("Submit Survey")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                }
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(10)
-                .padding(.horizontal)
                 if let questions = survey.questions {
-                    if index < (questions.count - 1) {
-                        Button(action: {
-                            index += 1
-                        }, label: {
-                            Text("Next")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                        })
-                    }
-                } else {
-                    Spacer()
+                    SurveyNavigationFooterView(questions: questions, index: $index)
                 }
-
             }
         }
         .navigationBarTitle("Survey", displayMode: .inline)
+    }
+}
+
+struct SurveyNavigationFooterView: View {
+    var questions: [SurveyQuestion]
+    @Binding var index: Int
+
+    private let buttonTextColor = Color.white
+    private let buttonBackgroundColor = Color.blue
+
+    var body: some View {
+        HStack {
+            Button(action: {
+                index -= 1
+            }) {
+                Text("Back")
+                    .font(.headline)
+                    .foregroundColor(buttonTextColor)
+                    .frame(maxWidth: .infinity)
+            }
+            .opacity(index > 0 ? 1 : 0)
+
+            Button(action: {
+                // surveyService.submitSurvey()
+            }) {
+                Text("Submit Survey")
+                    .font(.headline)
+                    .foregroundColor(buttonTextColor)
+                    .frame(maxWidth: .infinity)
+            }
+            .padding()
+            .background(buttonBackgroundColor)
+            .cornerRadius(10)
+            .padding(.horizontal)
+
+            Button(action: {
+                index += 1
+            }) {
+                Text("Next")
+                    .font(.headline)
+                    .foregroundColor(buttonTextColor)
+                    .frame(maxWidth: .infinity)
+            }
+            .opacity(questions.isEmpty || index >= (questions.count - 1) ? 0 : 1)
+        }
     }
 }
 
@@ -438,11 +449,10 @@ extension PreviewStruct {
     }
 
 }
-struct SurveyView_Previews: PreviewProvider {
 
+struct SurveyView_Previews: PreviewProvider {
     static var previews: some View {
         PreviewStruct.preview
             .environmentObject(SurveyService())
-
     }
 }
