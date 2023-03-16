@@ -24,7 +24,8 @@ struct PreviewStruct: View {
 }
 
 public struct SurveyView: View {
-
+    @Namespace private var namespace
+    @State private var isAnimating = false
     @State public var surveyService: SurveyService
     @Binding public var survey: Survey
     @Binding public var index: Int
@@ -39,36 +40,57 @@ public struct SurveyView: View {
         self._index = index
     }
 
-    public var body: some View {
-        SurveyWrap(color: .blue) {
-            ScrollView {
-                LazyVStack(spacing: 20) {
-                    if let questions = survey.questions {
-                        if let question = questions[index] {
-                            switch question.type {
-                            case .binaryChoice:
-                                BinaryQuestionView(question: question)
-                            case .multipleChoiceQuestion:
-                                MultipleChoiceQuestionView(question: question)
-                            case .inlineQuestionGroup:
-                                // let mcg = InlineMultipleChoiceQuestionGroup()
-                                InlineMultipleChoiceQuestionGroupView(question: question)
-                            case .contactForm:
-                                ContactFormQuestionView(question: question)
-                            case .commentsForm:
-                                CommentsFormQuestionView(question: question)
-                            default:
-                                EmptyView()
-                            }
-                        }
+    func switchView(question: SurveyQuestion) -> some View {
+        switch question.type {
+        case .binaryChoice:
+            return AnyView(BinaryQuestionView(question: question))
+        case .multipleChoiceQuestion:
+            return AnyView(MultipleChoiceQuestionView(question: question))
+        case .inlineQuestionGroup:
+            return AnyView(InlineMultipleChoiceQuestionGroupView(question: question))
+        case .contactForm:
+            return AnyView(ContactFormQuestionView(question: question))
+        case .commentsForm:
+            return AnyView(CommentsFormQuestionView(question: question))
+        default:
+            return AnyView(EmptyView())
+        }
+    }
+
+    func stackToAnim(questions: [SurveyQuestion]) -> some View {
+        AnyView(
+            LazyVStack(spacing: 20) {
+                if let questions = survey.questions {
+                    if let question = questions[index] {
+                        switchView(question: question)
                     }
                 }
-                .padding()
+            }.padding()
+        )
+    }
+
+    public var body: some View {
+        SurveyWrap(color: .gray) {
+            ScrollView {
+                if isAnimating {
+                    if let questions = survey.questions {
+                        stackToAnim(questions: questions)
+                            .matchedGeometryEffect(id: "survey", in: namespace)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                } else {
+                    if let questions = survey.questions {
+                        stackToAnim(questions: questions)
+                            .matchedGeometryEffect(id: "survey", in: namespace)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                }
             }
         } footer: {
             HStack {
                 if let questions = survey.questions {
-                    SurveyNavigationFooterView(questions: questions, index: $index)
+                    SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating)
+
                 }
             }
         }
@@ -79,6 +101,7 @@ public struct SurveyView: View {
 struct SurveyNavigationFooterView: View {
     var questions: [SurveyQuestion]
     @Binding var index: Int
+    @Binding var isAnimating: Bool
 
     private let buttonTextColor = Color.white
     private let buttonBackgroundColor = Color.blue
@@ -86,7 +109,18 @@ struct SurveyNavigationFooterView: View {
     var body: some View {
         HStack {
             Button(action: {
-                index -= 1
+
+                withAnimation {
+                    index = (index - 1) % questions.count
+                    isAnimating = true
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    withAnimation {
+                        isAnimating = false
+                    }
+                }
+
             }) {
                 Text("Back")
                     .font(.headline)
@@ -109,7 +143,18 @@ struct SurveyNavigationFooterView: View {
             .padding(.horizontal)
 
             Button(action: {
-                index += 1
+
+                withAnimation {
+                    index = (index + 1) % questions.count
+                    isAnimating = true
+                }
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    withAnimation {
+                        isAnimating = false
+                    }
+                }
+
             }) {
                 Text("Next")
                     .font(.headline)
@@ -216,7 +261,8 @@ public extension SurveyView {
                             MultipleChoiceResponse(uid: "red", text: "Red"),
                             MultipleChoiceResponse(uid: "blue", text: "Blue"),
                             MultipleChoiceResponse(uid: "green", text: "Green")
-                        ]
+                        ],
+                        allowsMultipleSelection: true
                     )
                 ]
             ),
@@ -341,7 +387,8 @@ extension PreviewStruct {
                             MultipleChoiceResponse(uid: "red", text: "Red"),
                             MultipleChoiceResponse(uid: "blue", text: "Blue"),
                             MultipleChoiceResponse(uid: "green", text: "Green")
-                        ]
+                        ],
+                        allowsMultipleSelection: true
                     )
                 ]
             ),

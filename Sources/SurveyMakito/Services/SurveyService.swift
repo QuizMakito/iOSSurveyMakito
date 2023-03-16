@@ -13,7 +13,9 @@ import BetterCodable
 import Combine
 
 public final class SurveyService: ObservableObject {
-    @Published var surveys: [Survey]  = [Survey]()
+
+    @Published var surveys: [Survey] = [Survey]()
+    @Published var responses: [SurveyResponse] = [SurveyResponse]()
 
     public var cancellables: Set<AnyCancellable> = []
 

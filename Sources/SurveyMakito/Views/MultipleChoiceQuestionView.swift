@@ -11,7 +11,7 @@ public struct MultipleChoiceQuestionView: View {
     @EnvironmentObject public var surveyService: SurveyService
 
     public let question: SurveyQuestion
-    @State var selectedIndices: [Int] = []
+    @State var selectedIndices: [MultipleChoiceResponse] = []
     public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
@@ -26,7 +26,7 @@ public struct MultipleChoiceQuestionView: View {
                                 Button(action: { selectChoice(choice, multipleChoiceQuestion) }) {
                                     HStack {
                                         Circle()
-                                            .fill(choice.selected ? Color.green : Color(.systemGray5))
+                                            .fill(appearsIn(choice) ? Color.green : Color(.systemGray5))
                                             .frame(width: 30, height: 30)
                                             .padding(.leading, 20)
                                             .overlay(
@@ -52,13 +52,17 @@ public struct MultipleChoiceQuestionView: View {
         }
     }
 
+    func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
+        return selectedIndices.contains(selectedChoice)
+    }
+
     func selectChoice(_ selectedChoice: MultipleChoiceResponse, _ question: MultipleChoiceQuestion) {
         if question.allowsMultipleSelection {
             toggleSelectedIndex(for: selectedChoice)
         } else {
             setSelectedIndex(for: selectedChoice)
         }
-        updateSelectedChoices()
+        // updateSelectedChoices()
         scrollToOtherTextFieldIfNecessary(selectedChoice: selectedChoice)
     }
 
@@ -73,25 +77,29 @@ public struct MultipleChoiceQuestionView: View {
     }
 
     private func indexOfChoice(_ choice: MultipleChoiceResponse) -> Int? {
-        // question.choices.firstIndex { $0.uuid == choice.uid }
-        return 0
+        guard let choices = question.multipleChoice else { return nil }
+        return choices.firstIndex { $0.uid == choice.uid }
     }
 
     private func setSelectedIndex(for selectedChoice: MultipleChoiceResponse) {
-        guard let index = indexOfChoice(selectedChoice) else { return }
-        selectedIndices = [index]
+        // guard let index = indexOfChoice(selectedChoice) else { return }
+        selectedIndices.append(selectedChoice)
     }
 
     private func toggleSelectedIndex(for selectedChoice: MultipleChoiceResponse) {
-        if let index = indexOfChoice(selectedChoice) {
-            // selectedIndices.toggle(index)
+        if selectedIndices.contains(selectedChoice) {
+            selectedIndices = selectedIndices.filter { $0 != selectedChoice }
+            return
         }
+        selectedIndices.append(selectedChoice)
     }
 
     private func updateSelectedChoices() {
-        // for (i, choice) in question.choices.enumerated() {
-        // choice.selected = selectedIndices.contains(i)
-        // }
+        /*
+         for (i, choice) in question.multipleChoice?.enumerated() {
+         choice.selected = selectedIndices.contains(i)
+         }
+         */
     }
 
     private func scrollToOtherTextFieldIfNecessary(selectedChoice: MultipleChoiceResponse) {
