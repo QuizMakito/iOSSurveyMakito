@@ -7,6 +7,37 @@
 
 import SwiftUI
 
+public struct Contact {
+    public var selectedChoices: [String: String]?
+    public var emailAddress: String?
+    public var name: String?
+    public var company: String?
+    public var phoneNumber: String?
+    public var feedback: String?
+
+    init(
+        selectedChoices: [String: String]? = nil,
+        emailAddress: String? = nil,
+        name: String? = nil,
+        company: String? = nil,
+        phoneNumber: String? = nil,
+        feedback: String? = nil
+    ) {
+        self.selectedChoices = selectedChoices
+        self.emailAddress = emailAddress
+        self.name = name
+        self.company = company
+        self.phoneNumber = phoneNumber
+        self.feedback = feedback
+    }
+
+    func changing<T>(path: WritableKeyPath<Contact, T>, to value: T) -> Contact {
+        var clone = self
+        clone[keyPath: path] = value
+        return clone
+    }
+}
+
 public struct ContactFormQuestionView: View {
     @EnvironmentObject public var surveyService: SurveyService
 
@@ -18,6 +49,9 @@ public struct ContactFormQuestionView: View {
     @State private var company: String = ""
     @State private var phoneNumber: String = ""
     @State private var feedback: String = ""
+
+    @State private var contact: Contact = Contact()
+    @Binding var response: SurveyResponse
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -63,41 +97,47 @@ public struct ContactFormQuestionView: View {
         }
         .padding()
         .onChange(of: selectedChoices) { _ in
+
             /*
              surveyService.updateContactFormQuestionResponse(
              uid: question.uid,
              choices: selected
              )*/
         }
-        .onChange(of: emailAddress) { _ in
+        .onChange(of: emailAddress) { value in
+            contact = contact.changing(path: \.emailAddress, to: value)
             /*
              surveyService.updateContactFormQuestionResponse(
              uid: question.uid,
              emailAddress: newValue
              )*/
         }
-        .onChange(of: name) { _ in
+        .onChange(of: name) { value in
+            contact = contact.changing(path: \.name, to: value)
             /*
              surveyService.updateContactFormQuestionResponse(
              uid: question.uid,
              name: newValue
              )*/
         }
-        .onChange(of: company) { _ in
+        .onChange(of: company) { value in
+            contact = contact.changing(path: \.company, to: value)
             /*
              surveyService.updateContactFormQuestionResponse(
              uid: question.uid,
              company: newValue
              )*/
         }
-        .onChange(of: phoneNumber) { _ in
+        .onChange(of: phoneNumber) { value in
+            contact = contact.changing(path: \.phoneNumber, to: value)
             /*
              surveyService.updateContactFormQuestionResponse(
              uid: question.uid,
              phoneNumber: newValue
              )*/
         }
-        .onChange(of: feedback) { _ in
+        .onChange(of: feedback) { value in
+            contact = contact.changing(path: \.feedback, to: value)
             /*
              surveyService.updateContactFormQuestionResponse(
              uid: question.uid,
@@ -128,7 +168,7 @@ public extension ContactFormQuestionView {
         let question = SurveyQuestion(
             contactFormQuestion: contactQuestion
         )
-        return ContactFormQuestionView(question: question)
+        return ContactFormQuestionView(question: question, response: .constant(SurveyResponse()))
     }
 }
 

@@ -12,6 +12,8 @@ public struct MultipleChoiceQuestionView: View {
 
     public let question: SurveyQuestion
     @State var selectedIndices: [MultipleChoiceResponse] = []
+    @Binding var response: SurveyResponse
+
     public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
@@ -22,7 +24,6 @@ public struct MultipleChoiceQuestionView: View {
                     VStack(alignment: .leading, spacing: 5) {
                         if let choiceQuestions = multipleChoiceQuestion.choices {
                             ForEach(choiceQuestions, id: \.uid) { choice in
-
                                 Button(action: { selectChoice(choice, multipleChoiceQuestion) }) {
                                     HStack {
                                         Circle()
@@ -49,6 +50,17 @@ public struct MultipleChoiceQuestionView: View {
                     }
                 }
             }
+        }
+        .onChange(of: selectedIndices) { _ in
+            let values = selectedIndices.reduce(into: [:]) { result, response in
+                result[response.uid] = Failable(value: response.text)
+            }
+
+            response = SurveyResponse(
+                type: .multipleChoiceQuestion,
+                values: values
+            )
+
         }
     }
 

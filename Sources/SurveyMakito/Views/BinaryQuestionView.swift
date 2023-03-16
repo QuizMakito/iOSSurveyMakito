@@ -11,6 +11,7 @@ public struct BinaryQuestionView: View {
     @EnvironmentObject var surveyService: SurveyService
     let question: SurveyQuestion
     @State var checked: Bool = false
+    @Binding var response: SurveyResponse
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(question.title)
@@ -21,12 +22,16 @@ public struct BinaryQuestionView: View {
                 ForEach(choices, id: \.uid) { choice in
                     Button(action: {
                         // surveyService.setBinaryQuestionResponse(uid: question.uid, choiceUid: choice.uid)
+                        response = SurveyResponse(uid: choice.uid, type: .binaryChoice, values: [
+                            "choice.text": Failable(uid: choice.uid, value: "selected")
+                        ])
+
                     }) {
                         HStack {
                             Text(choice.text)
                                 .foregroundColor(.white)
                             Spacer()
-                            if checked {
+                            if choice.uid == response.uid {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.white)
                             } else {
@@ -60,6 +65,6 @@ struct BinaryQuestionView_Previews: PreviewProvider {
                 ],
                 autoAdvanceOnChoice: true
             )
-        ))
+        ), response: .constant(SurveyResponse()))
     }
 }
