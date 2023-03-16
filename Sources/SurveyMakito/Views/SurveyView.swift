@@ -76,7 +76,6 @@ public struct SurveyView: View {
                     if let questions = survey.questions {
                         stackToAnim(questions: questions)
                             .matchedGeometryEffect(id: "survey", in: namespace)
-                            .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
                     }
                 } else {
                     if let questions = survey.questions {
@@ -281,20 +280,27 @@ public extension SurveyView {
                 )
             ),
             SurveyQuestion(
-                uid: "q2",
-                title: "What's your favorite color?",
-                tag: "color",
-                type: .multipleChoiceQuestion,
-                multipleChoice: [
-                    MultipleChoiceQuestion(
-                        uid: "mc1",
-                        choices: [
-                            MultipleChoiceResponse(uid: "red", text: "Red"),
-                            MultipleChoiceResponse(uid: "blue", text: "Blue"),
-                            MultipleChoiceResponse(uid: "green", text: "Green")
-                        ]
-                    )
-                ]
+                uid: "q1",
+                title: "On a scale of 1 to 10, how satisfied are you with our product?",
+                tag: "satisfaction",
+                type: .binaryChoice,
+                binaryQuestion: BinaryQuestion(
+                    uid: "b1",
+                    required: true,
+                    choices: [
+                        MultipleChoiceResponse(uid: "1", text: "1"),
+                        MultipleChoiceResponse(uid: "2", text: "2"),
+                        MultipleChoiceResponse(uid: "3", text: "3"),
+                        MultipleChoiceResponse(uid: "4", text: "4"),
+                        MultipleChoiceResponse(uid: "5", text: "5"),
+                        MultipleChoiceResponse(uid: "6", text: "6"),
+                        MultipleChoiceResponse(uid: "7", text: "7"),
+                        MultipleChoiceResponse(uid: "8", text: "8"),
+                        MultipleChoiceResponse(uid: "9", text: "9"),
+                        MultipleChoiceResponse(uid: "10", text: "10")
+                    ],
+                    autoAdvanceOnChoice: true
+                )
             ),
             SurveyQuestion(
                 uid: "q3",
@@ -407,20 +413,27 @@ extension PreviewStruct {
                 )
             ),
             SurveyQuestion(
-                uid: "q2",
-                title: "What's your favorite color?",
-                tag: "color",
-                type: .multipleChoiceQuestion,
-                multipleChoice: [
-                    MultipleChoiceQuestion(
-                        uid: "mc1",
-                        choices: [
-                            MultipleChoiceResponse(uid: "red", text: "Red"),
-                            MultipleChoiceResponse(uid: "blue", text: "Blue"),
-                            MultipleChoiceResponse(uid: "green", text: "Green")
-                        ]
-                    )
-                ]
+                uid: "q6",
+                title: "On a scale of 1 to 10, how satisfied are you with our product?",
+                tag: "satisfaction",
+                type: .binaryChoice,
+                binaryQuestion: BinaryQuestion(
+                    uid: "b1",
+                    required: true,
+                    choices: [
+                        MultipleChoiceResponse(uid: "1", text: "1"),
+                        MultipleChoiceResponse(uid: "2", text: "2"),
+                        MultipleChoiceResponse(uid: "3", text: "3"),
+                        MultipleChoiceResponse(uid: "4", text: "4"),
+                        MultipleChoiceResponse(uid: "5", text: "5"),
+                        MultipleChoiceResponse(uid: "6", text: "6"),
+                        MultipleChoiceResponse(uid: "7", text: "7"),
+                        MultipleChoiceResponse(uid: "8", text: "8"),
+                        MultipleChoiceResponse(uid: "9", text: "9"),
+                        MultipleChoiceResponse(uid: "10", text: "10")
+                    ],
+                    autoAdvanceOnChoice: true
+                )
             ),
             SurveyQuestion(
                 uid: "q3",
