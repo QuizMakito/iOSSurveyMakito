@@ -17,27 +17,32 @@ public struct MultipleChoiceQuestionView: View {
             Text(question.title)
                 .font(.title2)
                 .padding(.bottom, 10)
-
-            ForEach(question.multipleChoice ?? [], id: \.uid) { multipleChoiceQuestion in
-                VStack(alignment: .leading, spacing: 5) {
-
-                    ForEach(multipleChoiceQuestion.choices ?? [], id: \.uid) { choice in
-                        Button(action: {
-                            // surveyService.setMultipleChoiceQuestionResponse(uid: multipleChoiceQuestion.uid, responseUid: choice.uid)
-                        }, label: {
-                            HStack {
-                                /*
-                                 if surveyService.getMultipleChoiceQuestionResponse(uid: multipleChoiceQuestion.uid) == choice.uid {
-                                 Image(systemName: "checkmark.circle.fill")
-                                 .foregroundColor(.white)
-                                 } else {
-                                 Image(systemName: "circle")
-                                 .foregroundColor(.white)
-                                 }*/
-
-                                Text(choice.text)
+            if let multiChoices = question.multipleChoice {
+                ForEach(multiChoices, id: \.uid) { multipleChoiceQuestion in
+                    VStack(alignment: .leading, spacing: 5) {
+                        if let choiceQuestions = multipleChoiceQuestion.choices {
+                            ForEach(choiceQuestions, id: \.uid) { choice in
+                                Button(action: {
+                                    // surveyService.setMultipleChoiceQuestionResponse(uid: multipleChoiceQuestion.uid, responseUid: choice.uid)
+                                }, label: {
+                                    HStack {
+                                        /*
+                                         if surveyService.getMultipleChoiceQuestionResponse(uid: multipleChoiceQuestion.uid) == choice.uid {
+                                         Image(systemName: "checkmark.circle.fill")
+                                         .foregroundColor(.white)
+                                         } else {
+                                         Image(systemName: "circle")
+                                         .foregroundColor(.white)
+                                         }
+                                         */
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .foregroundColor(.white)
+                                        Text(choice.text)
+                                            .foregroundColor(.white)
+                                    }
+                                })
                             }
-                        })
+                        }
                     }
                 }
             }
@@ -61,6 +66,6 @@ struct MultipleChoiceQuestionView_Previews: PreviewProvider {
     static let survey = Survey(uid: "abcd-1234", questions: [question])
 
     static var previews: some View {
-        SurveyView(survey: survey)
+        SurveyView(survey: .constant(survey), index: .constant(0))
     }
 }
