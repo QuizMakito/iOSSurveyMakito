@@ -76,13 +76,12 @@ public struct SurveyView: View {
                     if let questions = survey.questions {
                         stackToAnim(questions: questions)
                             .matchedGeometryEffect(id: "survey", in: namespace)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
                     }
                 } else {
                     if let questions = survey.questions {
                         stackToAnim(questions: questions)
                             .matchedGeometryEffect(id: "survey", in: namespace)
-                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
             }
