@@ -9,8 +9,10 @@ import SwiftUI
 
 public struct InlineMultipleChoiceQuestionGroupView: View {
     let question: SurveyQuestion // InlineMultipleChoiceQuestionGroup
+
     @EnvironmentObject var surveyService: SurveyService
     @State var isSelected: Bool = false
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             if let question = question.inlineMultipleChoice {

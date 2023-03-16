@@ -98,7 +98,9 @@ public struct SurveyView: View {
             }
         }
         .onChange(of: response) { value in
-            var list = responses.filter { $0.uid != value.uid }
+
+            SurveyView.log.debug("responsesEnter:", responses)
+            var list = responses.filter { $0.uid == value.uid }
             list.append(value)
             responses = list
             SurveyView.log.debug("responses:", responses)
