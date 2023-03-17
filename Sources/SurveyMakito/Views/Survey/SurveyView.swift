@@ -28,8 +28,6 @@ public struct SurveyView: View {
 
     // A single response that comes from a question
     @State var response: SurveyResponse = SurveyResponse()
-    // The reesults of all questions
-    @State var responses: [SurveyResponse] = [SurveyResponse]()
 
     @Binding public var survey: Survey
     @Binding public var index: Int
@@ -97,14 +95,9 @@ public struct SurveyView: View {
                 }
             }
         }
-        .onChange(of: response) { value in
-
-            print("responsesEnter:\(responses)")
-            var list = responses.filter { $0.uid == value.uid }
-            list.append(value)
-            responses = list
-            print("responsesEnter:\(responses)")
-            SurveyView.log.debug("responses:", responses)
+        .onChange(of: response) { _ in
+            surveyService.addResponse(response: response)
+            surveyService.log()
         }
         .navigationBarTitle("Survey", displayMode: .inline)
     }

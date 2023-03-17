@@ -27,6 +27,9 @@ let package = Package(
                 .product(name: "FirebaseFirestoreSwift", package: "Firebase"),
                 .product(name: "FirebaseService", package: "FirebaseService"),
                 "BetterCodable"
-            ])
+            ]),
+        .testTarget(
+            name: "SurveyMakitoTests",
+            dependencies: ["SurveyMakito"])
     ]
 )

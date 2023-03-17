@@ -15,7 +15,7 @@ import Combine
 public final class SurveyService: ObservableObject {
 
     @Published var surveys: [Survey] = [Survey]()
-    @Published var responses: [SurveyResponse] = [SurveyResponse]()
+    @Published var responses: [String: SurveyResponse] = [:]
 
     public var cancellables: Set<AnyCancellable> = []
 
@@ -29,5 +29,15 @@ public final class SurveyService: ObservableObject {
         surveys = try await FirestoreManager.query(path: SurveyPath.Firestore.surveys, queryItems: [
             QueryItem("isActive", .isEqualTo, true)
         ])
+    }
+
+    public func addResponse(response: SurveyResponse) {
+        responses[response.uid] = response
+    }
+
+    public func log() {
+        for (key, value) in responses {
+            print("Key: \(key)\nValue: \(value)\n")
+        }
     }
 }
