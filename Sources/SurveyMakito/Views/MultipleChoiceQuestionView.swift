@@ -9,12 +9,12 @@ import SwiftUI
 
 public struct MultipleChoiceQuestionView: View {
     @EnvironmentObject public var surveyService: SurveyService
+    @State var responseId: String = ""
+    @State var selectedIndices: [MultipleChoiceResponse] = []
 
     public let question: SurveyQuestion
-    @State var selectedIndices: [MultipleChoiceResponse] = []
     @Binding var response: SurveyResponse
-    @State var responseId: String = ""
-
+    @Binding var isAnimating: Bool
     public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
@@ -52,7 +52,8 @@ public struct MultipleChoiceQuestionView: View {
                 }
             }
         }
-        .onAppear {
+        .onChange(of: isAnimating) { underAnimation in
+            guard !underAnimation else { return }
             guard let surveyResponse = surveyService.responses[question.uid] else { return }
             selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
         }

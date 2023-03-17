@@ -48,7 +48,7 @@ public struct SurveyView: View {
         case .binaryChoice:
             return AnyView(BinaryQuestionView(question: question, response: $response))
         case .multipleChoiceQuestion:
-            return AnyView(MultipleChoiceQuestionView(question: question, response: $response))
+            return AnyView(MultipleChoiceQuestionView(question: question, response: $response, isAnimating: $isAnimating))
         case .inlineQuestionGroup:
             return AnyView(InlineMultipleChoiceQuestionGroupView(question: question))
         case .contactForm:
