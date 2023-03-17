@@ -13,6 +13,7 @@ public struct MultipleChoiceQuestionView: View {
     public let question: SurveyQuestion
     @State var selectedIndices: [MultipleChoiceResponse] = []
     @Binding var response: SurveyResponse
+    @State var responseId: String = ""
 
     public var body: some View {
         VStack(alignment: .leading) {
@@ -51,13 +52,22 @@ public struct MultipleChoiceQuestionView: View {
                 }
             }
         }
+        .onAppear {
+            guard let surveyResponse = surveyService.responses[question.uid] else { return }
+            selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
+        }
+        .onChange(of: responseId) { _ in
+            print(responseId)
+            // choiceLookup = surveyService.getMultipleChoiceResponses(from: )
+
+        }
         .onChange(of: selectedIndices) { _ in
             let values = selectedIndices.reduce(into: [:]) { result, response in
                 result[response.uid] = Failable(value: response.text)
             }
 
             response = SurveyResponse(
-                uid: UUID().uuidString,
+                uid: responseId,
                 type: .multipleChoiceQuestion,
                 values: values
             )

@@ -24,17 +24,20 @@ public struct SurveyResponse: Codable, Firestorable, Identifiable, Hashable {
 
     @DocumentID public var id: String?
     @DefaultEmptyString public var uid: String
+    @DefaultEmptyString public var questionId: String
     @DefaultEmptySurveyItemType public var type: SurveyItemType?
     @DefaultEmptyDictionary var values: [String: Failable]
 
     init(
         id: String? = nil,
         uid: String? = nil,
+        questionId: String? = nil,
         type: SurveyItemType? = nil,
         values: [String: Failable]? = nil
     ) {
         self.id = id
         self.uid = uid ?? ""
+        self.questionId = questionId ?? ""
         self.type = type
         self.values = values ?? [:]
     }

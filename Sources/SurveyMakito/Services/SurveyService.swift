@@ -13,7 +13,6 @@ import BetterCodable
 import Combine
 
 public final class SurveyService: ObservableObject {
-    
 
     @Published var surveys: [Survey] = [Survey]()
     @Published var responses: [String: SurveyResponse] = [:]
@@ -33,8 +32,15 @@ public final class SurveyService: ObservableObject {
     }
 
     public func addResponse(response: SurveyResponse) throws {
-        guard response.uid != "" else { throw SurveyError.keyIsEmpty }
-        responses[response.uid] = response
+        guard response.questionId != "" else { throw SurveyError.keyIsEmpty }
+        responses[response.questionId] = response
+    }
+
+    public func setResponseId(_ questionUID: String, _ token: String) -> Int {
+        var hasher = Hasher()
+        hasher.combine(questionUID)
+        hasher.combine(token)
+        return hasher.finalize()
     }
 
     public func log() {
@@ -42,5 +48,21 @@ public final class SurveyService: ObservableObject {
             print("Key: \(key)\nValue: \(value)\n")
         }
     }
-}
 
+    func getMultipleChoiceResponses(from response: SurveyResponse) -> [MultipleChoiceResponse] {
+        guard response.type == .multipleChoiceQuestion else {
+            return []
+        }
+
+        let responses = response.values.values.compactMap { failable -> MultipleChoiceResponse? in
+            guard let text = failable.value as? String else {
+                return nil
+            }
+
+            return MultipleChoiceResponse(text: text, selected: true)
+        }
+
+        return responses
+    }
+
+}

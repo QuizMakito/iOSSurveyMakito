@@ -19,45 +19,62 @@ final class SurveyServiceTests: XCTestCase {
         // Test adding a single response
         try? service.addResponse(response: aResponse)
         XCTAssertEqual(service.responses.count, 1)
-        XCTAssertEqual(service.responses[aResponse.uid]?.uid, aResponse.uid)
+        XCTAssertEqual(service.responses[aResponse.questionId]?.uid, aResponse.uid)
 
         // Test adding another response for the same survey
         try? service.addResponse(response: bResponse)
         XCTAssertEqual(service.responses.count, 2)
-        XCTAssertEqual(service.responses[bResponse.uid]?.uid, bResponse.uid)
+        XCTAssertEqual(service.responses[bResponse.questionId]?.uid, bResponse.uid)
 
         // Test updating an existing response
         let updatedAResponse = SurveyResponse(
             uid: Uids.a.rawValue,
+            questionId: Uids.a.response.questionId,
             type: .multipleChoiceQuestion,
             values: [
                 Uids.b.rawValue: Failable(uid: UUID().uuidString, value: "Purple"),
                 UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue")
             ]
         )
+
         try? service.addResponse(response: updatedAResponse)
         XCTAssertEqual(service.responses.count, 2)
-        XCTAssertEqual(service.responses[aResponse.uid]?.values.count, 2)
-        XCTAssertEqual(service.responses[aResponse.uid]?.values[Uids.b.rawValue]?.value, "Purple")
+        XCTAssertEqual(service.responses[aResponse.questionId]?.values.count, 2)
+        XCTAssertEqual(service.responses[aResponse.questionId]?.values[Uids.b.rawValue]?.value, "Purple")
+
+        let reOccuringQuestion = service.responses[aResponse.questionId]
+        let items = service.getMultipleChoiceResponses(from: reOccuringQuestion!)
+        XCTAssertEqual(items.count, 2)
+    }
+
+    func testLookUpQuiz() {
+        let aResponse = Uids.a.response
+        let bResponse = Uids.b.response
+
+        // Test adding a single response
+        try? service.addResponse(response: aResponse)
+        try? service.addResponse(response: bResponse)
+
+        XCTAssertEqual(service.responses.isEmpty, false)
     }
 
     func testContactForm() {
-        let key = Uids.i.rawValue
+        let key = Uids.i.response.questionId
         let response = Uids.i.response
         let valueKey = Uids.s.rawValue
         try? service.addResponse(response: response)
         XCTAssertEqual(service.responses.count, 1)
-        XCTAssertEqual(service.responses[key]!.uid, key)
+        XCTAssertEqual(service.responses[key]!.questionId, key)
         XCTAssertEqual(service.responses[key]!.values[valueKey]?.value, "johndoe@example.com")
     }
 
     func testCommentsForm() {
-        let key = Uids.o.rawValue
+        let key = Uids.o.response.questionId
         let response = Uids.o.response
         let valueKey = Uids.m.rawValue
         try? service.addResponse(response: response)
         XCTAssertEqual(service.responses.count, 1)
-        XCTAssertEqual(service.responses[key]!.uid, key)
+        XCTAssertEqual(service.responses[key]!.questionId, key)
         XCTAssertEqual(service.responses[key]!.values[valueKey]?.value, "Keep up the good work!")
     }
 
@@ -86,81 +103,111 @@ enum Uids: String {
 
     var response: SurveyResponse {
         switch self {
-        case .a: return SurveyResponse(uid: Uids.a.rawValue, type: .multipleChoiceQuestion, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Red"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue")
-        ])
-        case .b: return SurveyResponse(uid: Uids.b.rawValue, type: .multipleChoiceQuestion, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Black"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Orange")
-        ])
+        case .a: return SurveyResponse(uid: Uids.a.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .multipleChoiceQuestion, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Red"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue")
+                                       ])
+        case .b: return SurveyResponse(uid: Uids.b.rawValue,
+                                       questionId: SurveyView.survey.questions![1].uid,
+                                       type: .multipleChoiceQuestion, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Black"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Orange")
+                                       ])
         case .c:
-            return SurveyResponse(uid: Uids.c.rawValue, type: .inlineQuestionGroup, values: [
-                UUID().uuidString: Failable(uid: UUID().uuidString, value: "Example Text Input Response")
-            ])
+            return SurveyResponse(uid: Uids.c.rawValue,
+                                  questionId: SurveyView.survey.questions![0].uid,
+                                  type: .inlineQuestionGroup, values: [
+                                    UUID().uuidString: Failable(uid: UUID().uuidString, value: "Example Text Input Response")
+                                  ])
         case .d:
-            return SurveyResponse(uid: Uids.d.rawValue, type: .multipleChoiceQuestion, values: [
-                UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option A"),
-                UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option B"),
-                UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option C")
-            ])
+            return SurveyResponse(uid: Uids.d.rawValue,
+                                  questionId: SurveyView.survey.questions![0].uid,
+                                  type: .multipleChoiceQuestion, values: [
+                                    UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option A"),
+                                    UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option B"),
+                                    UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option C")
+                                  ])
         case .e:
-            return SurveyResponse(uid: Uids.e.rawValue, type: .binaryChoice, values: [
-                UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option A")
-            ])
-        case .h: return SurveyResponse(uid: Uids.h.rawValue, type: .binaryChoice, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "No")
-        ])
+            return SurveyResponse(uid: Uids.e.rawValue,
+                                  questionId: SurveyView.survey.questions![0].uid,
+                                  type: .binaryChoice, values: [
+                                    UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option A")
+                                  ])
+        case .h: return SurveyResponse(uid: Uids.h.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .binaryChoice, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "No")
+                                       ])
 
-        case .i: return SurveyResponse(uid: Uids.i.rawValue, type: .contactForm, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "John"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Doe"),
-            Uids.s.rawValue: Failable(uid: UUID().uuidString, value: "johndoe@example.com"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "1234567890")
-        ])
+        case .i: return SurveyResponse(uid: Uids.i.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .contactForm, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "John"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Doe"),
+                                        Uids.s.rawValue: Failable(uid: UUID().uuidString, value: "johndoe@example.com"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "1234567890")
+                                       ])
 
-        case .j: return SurveyResponse(uid: Uids.j.rawValue, type: .inlineQuestionGroup, values: [
-            Uids.a.rawValue: Failable(uid: UUID().uuidString, value: "Red"),
-            Uids.b.rawValue: Failable(uid: UUID().uuidString, value: "Black")
-        ])
+        case .j: return SurveyResponse(uid: Uids.j.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .inlineQuestionGroup, values: [
+                                        Uids.a.rawValue: Failable(uid: UUID().uuidString, value: "Red"),
+                                        Uids.b.rawValue: Failable(uid: UUID().uuidString, value: "Black")
+                                       ])
 
-        case .k: return SurveyResponse(uid: Uids.k.rawValue, type: .commentsForm, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Great product!")
-        ])
+        case .k: return SurveyResponse(uid: Uids.k.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .commentsForm, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Great product!")
+                                       ])
 
-        case .l: return SurveyResponse(uid: Uids.l.rawValue, type: .multipleChoiceQuestion, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Red"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Green"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Black"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "White")
-        ])
+        case .l: return SurveyResponse(uid: Uids.l.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .multipleChoiceQuestion, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Red"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Green"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Black"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "White")
+                                       ])
 
-        case .m: return SurveyResponse(uid: Uids.m.rawValue, type: .binaryChoice, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "No")
-        ])
+        case .m: return SurveyResponse(uid: Uids.m.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .binaryChoice, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "No")
+                                       ])
 
-        case .n: return SurveyResponse(uid: Uids.n.rawValue, type: .inlineQuestionGroup, values: [
-            Uids.a.rawValue: Failable(uid: UUID().uuidString, value: "Red"),
-            Uids.b.rawValue: Failable(uid: UUID().uuidString, value: "Black"),
-            Uids.c.rawValue: Failable(uid: UUID().uuidString, value: "Green")
-        ])
+        case .n: return SurveyResponse(uid: Uids.n.rawValue,
+                                       questionId: SurveyView.survey.questions![2].uid,
+                                       type: .inlineQuestionGroup, values: [
+                                        Uids.a.rawValue: Failable(uid: UUID().uuidString, value: "Red"),
+                                        Uids.b.rawValue: Failable(uid: UUID().uuidString, value: "Black"),
+                                        Uids.c.rawValue: Failable(uid: UUID().uuidString, value: "Green")
+                                       ])
 
-        case .o: return SurveyResponse(uid: Uids.o.rawValue, type: .commentsForm, values: [
-            Uids.m.rawValue: Failable(uid: UUID().uuidString, value: "Keep up the good work!")
-        ])
+        case .o: return SurveyResponse(uid: Uids.o.rawValue,
+                                       questionId: SurveyView.survey.questions![3].uid,
+                                       type: .commentsForm, values: [
+                                        Uids.m.rawValue: Failable(uid: UUID().uuidString, value: "Keep up the good work!")
+                                       ])
 
-        case .p: return SurveyResponse(uid: Uids.p.rawValue, type: .multipleChoiceQuestion, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Android"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "iOS"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Windows"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "MacOS")
-        ])
+        case .p: return SurveyResponse(uid: Uids.p.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .multipleChoiceQuestion, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Android"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "iOS"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Windows"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "MacOS")
+                                       ])
 
-        default: return SurveyResponse(uid: Uids.a.rawValue, type: .multipleChoiceQuestion, values: [
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Red"),
-            UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue")
-        ])
+        default: return SurveyResponse(uid: Uids.a.rawValue,
+                                       questionId: SurveyView.survey.questions![0].uid,
+                                       type: .multipleChoiceQuestion, values: [
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Red"),
+                                        UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue")
+                                       ])
         }
     }
 }

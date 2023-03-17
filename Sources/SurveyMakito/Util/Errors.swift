@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Kris Steigerwald on 3/17/23.
 //
@@ -25,7 +25,7 @@ extension SurveyError: CustomStringConvertible {
             return "UID Key can not be empty."
         case .notFound:
             return "The specified item could not be found."
-        case .unexpected(_):
+        case .unexpected:
             return "An unexpected error occurred."
         }
     }
