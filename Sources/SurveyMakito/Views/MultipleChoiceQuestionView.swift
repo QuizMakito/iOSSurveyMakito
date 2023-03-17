@@ -68,6 +68,7 @@ public struct MultipleChoiceQuestionView: View {
 
             response = SurveyResponse(
                 uid: responseId,
+                questionId: question.uid,
                 type: .multipleChoiceQuestion,
                 values: values
             )
