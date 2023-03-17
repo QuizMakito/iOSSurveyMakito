@@ -13,6 +13,7 @@ import BetterCodable
 import Combine
 
 public final class SurveyService: ObservableObject {
+    
 
     @Published var surveys: [Survey] = [Survey]()
     @Published var responses: [String: SurveyResponse] = [:]
@@ -31,7 +32,8 @@ public final class SurveyService: ObservableObject {
         ])
     }
 
-    public func addResponse(response: SurveyResponse) {
+    public func addResponse(response: SurveyResponse) throws {
+        guard response.uid != "" else { throw SurveyError.keyIsEmpty }
         responses[response.uid] = response
     }
 
@@ -41,3 +43,4 @@ public final class SurveyService: ObservableObject {
         }
     }
 }
+
