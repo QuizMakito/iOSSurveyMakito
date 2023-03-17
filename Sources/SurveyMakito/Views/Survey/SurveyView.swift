@@ -99,10 +99,11 @@ public struct SurveyView: View {
         }
         .onChange(of: response) { value in
 
-            SurveyView.log.debug("responsesEnter:", responses)
+            print("responsesEnter:\(responses)")
             var list = responses.filter { $0.uid == value.uid }
             list.append(value)
             responses = list
+            print("responsesEnter:\(responses)")
             SurveyView.log.debug("responses:", responses)
         }
         .navigationBarTitle("Survey", displayMode: .inline)
