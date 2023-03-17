@@ -22,9 +22,11 @@ public struct BinaryQuestionView: View {
                 ForEach(choices, id: \.uid) { choice in
                     Button(action: {
                         // surveyService.setBinaryQuestionResponse(uid: question.uid, choiceUid: choice.uid)
-                        response = SurveyResponse(uid: choice.uid, type: .binaryChoice, values: [
-                            "choice.text": Failable(uid: choice.uid, value: "selected")
-                        ])
+                        response = SurveyResponse(uid: choice.uid,
+                                                  questionId: question.uid,
+                                                  type: .binaryChoice, values: [
+                                                    "choice.text": Failable(uid: choice.uid, value: "selected")
+                                                  ])
 
                     }) {
                         HStack {

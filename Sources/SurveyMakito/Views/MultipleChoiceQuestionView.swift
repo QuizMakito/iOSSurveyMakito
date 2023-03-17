@@ -10,7 +10,7 @@ import SwiftUI
 public struct MultipleChoiceQuestionView: View {
     @EnvironmentObject public var surveyService: SurveyService
 
-    public let question: SurveyQuestion
+    @State var question: SurveyQuestion
     @State var selectedIndices: [MultipleChoiceResponse] = []
     @Binding var response: SurveyResponse
     @State var responseId: String = ""
@@ -52,13 +52,13 @@ public struct MultipleChoiceQuestionView: View {
                 }
             }
         }
-        .onAppear {
-            guard let surveyResponse = surveyService.responses[question.uid] else { return }
-            selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
-        }
         .onChange(of: responseId) { _ in
             print(responseId)
             // choiceLookup = surveyService.getMultipleChoiceResponses(from: )
+        }
+        .onChange(of: question) { question in
+            guard let surveyResponse = surveyService.responses[question.uid] else { return }
+            selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
 
         }
         .onChange(of: selectedIndices) { _ in
