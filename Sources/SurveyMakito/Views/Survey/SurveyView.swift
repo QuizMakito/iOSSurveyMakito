@@ -96,8 +96,12 @@ public struct SurveyView: View {
             }
         }
         .onChange(of: response) { _ in
-            surveyService.addResponse(response: response)
-            surveyService.log()
+            do {
+                try surveyService.addResponse(response: response)
+                surveyService.log()
+            } catch {
+                print(error)
+            }
         }
         .navigationBarTitle("Survey", displayMode: .inline)
     }

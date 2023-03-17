@@ -17,12 +17,12 @@ final class SurveyServiceTests: XCTestCase {
         let bResponse = Uids.b.response
 
         // Test adding a single response
-        service.addResponse(response: aResponse)
+        try? service.addResponse(response: aResponse)
         XCTAssertEqual(service.responses.count, 1)
         XCTAssertEqual(service.responses[aResponse.uid]?.uid, aResponse.uid)
 
         // Test adding another response for the same survey
-        service.addResponse(response: bResponse)
+        try? service.addResponse(response: bResponse)
         XCTAssertEqual(service.responses.count, 2)
         XCTAssertEqual(service.responses[bResponse.uid]?.uid, bResponse.uid)
 
@@ -35,7 +35,7 @@ final class SurveyServiceTests: XCTestCase {
                 UUID().uuidString: Failable(uid: UUID().uuidString, value: "Blue")
             ]
         )
-        service.addResponse(response: updatedAResponse)
+        try? service.addResponse(response: updatedAResponse)
         XCTAssertEqual(service.responses.count, 2)
         XCTAssertEqual(service.responses[aResponse.uid]?.values.count, 2)
         XCTAssertEqual(service.responses[aResponse.uid]?.values[Uids.b.rawValue]?.value, "Purple")
@@ -45,7 +45,7 @@ final class SurveyServiceTests: XCTestCase {
         let key = Uids.i.rawValue
         let response = Uids.i.response
         let valueKey = Uids.s.rawValue
-        service.addResponse(response: response)
+        try? service.addResponse(response: response)
         XCTAssertEqual(service.responses.count, 1)
         XCTAssertEqual(service.responses[key]!.uid, key)
         XCTAssertEqual(service.responses[key]!.values[valueKey]?.value, "johndoe@example.com")
@@ -55,7 +55,7 @@ final class SurveyServiceTests: XCTestCase {
         let key = Uids.o.rawValue
         let response = Uids.o.response
         let valueKey = Uids.m.rawValue
-        service.addResponse(response: response)
+        try? service.addResponse(response: response)
         XCTAssertEqual(service.responses.count, 1)
         XCTAssertEqual(service.responses[key]!.uid, key)
         XCTAssertEqual(service.responses[key]!.values[valueKey]?.value, "Keep up the good work!")
