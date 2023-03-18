@@ -15,6 +15,7 @@ public struct MultipleChoiceQuestionView: View {
     public let question: SurveyQuestion
     @Binding var response: SurveyResponse
     @Binding var isAnimating: Bool
+
     public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
@@ -25,7 +26,9 @@ public struct MultipleChoiceQuestionView: View {
                     VStack(alignment: .leading, spacing: 5) {
                         if let choiceQuestions = multipleChoiceQuestion.choices {
                             ForEach(choiceQuestions, id: \.uid) { choice in
-                                Button(action: { selectChoice(choice, multipleChoiceQuestion) }) {
+                                Button(action: {
+                                    selectChoice(choice, multipleChoiceQuestion)
+                                }) {
                                     HStack {
                                         Circle()
                                             .fill(appearsIn(choice) ? Color.green : Color(.systemGray5))
@@ -108,7 +111,7 @@ public struct MultipleChoiceQuestionView: View {
 
     private func setSelectedIndex(for selectedChoice: MultipleChoiceResponse) {
         // guard let index = indexOfChoice(selectedChoice) else { return }
-        selectedIndices.append(selectedChoice)
+        selectedIndices = [selectedChoice]
     }
 
     private func toggleSelectedIndex(for selectedChoice: MultipleChoiceResponse) {

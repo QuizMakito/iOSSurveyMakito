@@ -15,17 +15,19 @@ public struct MultipleChoiceQuestion: Codable, Firestorable, Identifiable, Hasha
     public var id: String = UUID().uuidString
 
     @DefaultEmptyString public var uid: String
-    @DefaultMultipleChoiceResponse public var choices: [MultipleChoiceResponse]?
     @DefaultFalse public var allowsMultipleSelection = false
-
+    @DefaultFalse public var autoAdvanceOnChoice: Bool = false
+    @DefaultMultipleChoiceResponse public var choices: [MultipleChoiceResponse]?
     public init(
         uid: String? = nil,
         choices: [MultipleChoiceResponse]? = nil,
-        allowsMultipleSelection: Bool = false
+        allowsMultipleSelection: Bool = false,
+        autoAdvanceOnChoice: Bool = false
     ) {
         self.uid = uid ?? ""
         self.choices = choices
         self.allowsMultipleSelection = allowsMultipleSelection
+        self.autoAdvanceOnChoice = autoAdvanceOnChoice
     }
 }
 

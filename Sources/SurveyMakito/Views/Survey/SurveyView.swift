@@ -32,7 +32,8 @@ public struct SurveyView: View {
     @Binding public var survey: Survey
     @Binding public var index: Int
     static let log = Logger("SurveyMakito")
-
+    @State public var showAlert: Bool = false
+    @State public var counter: Int = 0
     public init(
         surveyService: SurveyService = SurveyService(),
         survey: Binding<Survey>,
@@ -88,20 +89,31 @@ public struct SurveyView: View {
                 }
             }
         } footer: {
-            HStack {
-                if let questions = survey.questions {
-                    SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating)
+            VStack {
+                Text("count: \(counter)")
+                HStack {
+                    if let questions = survey.questions {
+                        SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating)
 
+                    }
                 }
             }
         }
         .onChange(of: response) { _ in
+            counter = surveyService.responses.keys.count
             do {
                 try surveyService.addResponse(response: response)
                 surveyService.log()
             } catch {
-                print(error)
+                showAlert = true
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Fatal Error"),
+                message: Text("Important data missing" +
+                                "determined at this time.")
+            )
         }
         .navigationBarTitle("Survey", displayMode: .inline)
     }

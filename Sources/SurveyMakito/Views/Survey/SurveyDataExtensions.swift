@@ -259,31 +259,32 @@ extension PreviewStruct {
                 uid: "400D99D6-1F52-466F-B024-D38961E5384B",
                 title: "On a scale of 1 to 10, how satisfied are you with our product?",
                 tag: "satisfaction",
-                type: .binaryChoice,
-                binaryQuestion: BinaryQuestion(
-                    uid: "D5154185-F7BB-4989-95DB-3F864705C41F",
-                    required: true,
-                    choices: [
-                        MultipleChoiceResponse(uid: "22922676-8A4A-47F6-BBF4-6AA5381F63BF", text: "1"),
-                        MultipleChoiceResponse(uid: "46325376-383F-48CB-890F-A22D5F890F88", text: "2"),
-                        MultipleChoiceResponse(uid: "6A45189D-41DE-48AA-9E55-46302F02DFBD", text: "3"),
-                        MultipleChoiceResponse(uid: "41B5FB6E-B252-47E7-A36C-D124142BF1D0", text: "4"),
-                        MultipleChoiceResponse(uid: "8FAC5617-746D-456A-B946-0B4BF63061B8", text: "5"),
-                        MultipleChoiceResponse(uid: "6EDB2D11-8729-4575-A8B4-ABA6E71DA30D", text: "6"),
-                        MultipleChoiceResponse(uid: "2182E7A4-9CE0-4588-8D59-C2181EAB332D", text: "7"),
-                        MultipleChoiceResponse(uid: "66C5F3AB-03CB-4091-8F75-0C696E995149", text: "8"),
-                        MultipleChoiceResponse(uid: "C3709F83-9765-4DF4-9463-03F15DB7EC4F", text: "9"),
-                        MultipleChoiceResponse(uid: "EEA5D02A-EBA4-49E0-8584-F3D6E102B39A", text: "10")
-                    ],
-                    autoAdvanceOnChoice: true
-                )
+                type: .multipleChoiceQuestion,
+                multipleChoice: [
+                    MultipleChoiceQuestion(
+                        uid: "D5154185-F7BB-4989-95DB-3F864705C41F",
+                        choices: [
+                            MultipleChoiceResponse(uid: "22922676-8A4A-47F6-BBF4-6AA5381F63BF", text: "1"),
+                            MultipleChoiceResponse(uid: "46325376-383F-48CB-890F-A22D5F890F88", text: "2"),
+                            MultipleChoiceResponse(uid: "6A45189D-41DE-48AA-9E55-46302F02DFBD", text: "3"),
+                            MultipleChoiceResponse(uid: "41B5FB6E-B252-47E7-A36C-D124142BF1D0", text: "4"),
+                            MultipleChoiceResponse(uid: "8FAC5617-746D-456A-B946-0B4BF63061B8", text: "5"),
+                            MultipleChoiceResponse(uid: "6EDB2D11-8729-4575-A8B4-ABA6E71DA30D", text: "6"),
+                            MultipleChoiceResponse(uid: "2182E7A4-9CE0-4588-8D59-C2181EAB332D", text: "7"),
+                            MultipleChoiceResponse(uid: "66C5F3AB-03CB-4091-8F75-0C696E995149", text: "8"),
+                            MultipleChoiceResponse(uid: "C3709F83-9765-4DF4-9463-03F15DB7EC4F", text: "9"),
+                            MultipleChoiceResponse(uid: "EEA5D02A-EBA4-49E0-8584-F3D6E102B39A", text: "10")
+                        ],
+                        allowsMultipleSelection: false,
+                        autoAdvanceOnChoice: true
+                    )]
             ),
             SurveyQuestion(
                 uid: "4213F4C5-FAAD-409C-A97A-1D94B4C4134D",
                 title: "What's your age range?",
                 tag: "age",
-                type: .inlineQuestionGroup,
-                inlineMultipleChoice: InlineMultipleChoiceQuestionGroup(
+                type: .multipleChoiceQuestion,
+                multipleChoice: [MultipleChoiceQuestion(
                     uid: "FDA1C732-5E02-4001-BE0A-F72584823BE1",
                     choices: [
                         MultipleChoiceResponse(uid: "18-24", text: "18-24"),
@@ -293,18 +294,8 @@ extension PreviewStruct {
                         MultipleChoiceResponse(uid: "55-64", text: "55-64"),
                         MultipleChoiceResponse(uid: "65+", text: "65+")
                     ],
-                    questions: [
-                        MultipleChoiceQuestion(
-                            uid: "mc2",
-                            choices: [
-                                MultipleChoiceResponse(uid: "male", text: "Male"),
-                                MultipleChoiceResponse(uid: "female", text: "Female"),
-                                MultipleChoiceResponse(uid: "nonbinary", text: "Non-binary")
-                            ],
-                            allowsMultipleSelection: true
-                        )
-                    ]
-                )
+                    allowsMultipleSelection: false
+                )]
             ),
             SurveyQuestion(
                 uid: "09E81040-B2C6-4EA7-9D27-CFF0395E6D63",
