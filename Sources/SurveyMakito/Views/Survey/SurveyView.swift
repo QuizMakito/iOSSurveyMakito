@@ -14,6 +14,19 @@ public enum SurveyEvent {
     case invoke
 }
 
+public struct SurveyColors {
+    public let inactive: Color
+    public let active: Color
+
+    public init(
+        inactive: Color = Color(red: 0.9391835927963257, green: 0.9326529502868652, blue: 0.9873470067977905, opacity: 1),
+        active: Color = Color(red: 239/255, green: 93/255, blue: 168/255)
+    ) {
+        self.inactive = inactive
+        self.active = active
+    }
+}
+
 struct PreviewStruct: View {
     @State var index: Int = 0
     @State public var survey: Survey
@@ -60,6 +73,7 @@ public struct SurveyView: View {
     public let userId: String
     static let log = Logger("SurveyMakito")
     @State public var showAlert: Bool = false
+    public let colors: SurveyColors
     @Environment(\.dismiss) var dismiss
 
     public init(
@@ -67,13 +81,15 @@ public struct SurveyView: View {
         survey: Binding<Survey>,
         index: Binding<Int>,
         event: Binding<SurveyEvent>,
-        userId: String
+        userId: String,
+        colors: SurveyColors = SurveyColors()
     ) {
         self.surveyService = surveyService
         self._survey = survey
         self._index = index
         self._event = event
         self.userId = userId
+        self.colors = colors
     }
 
     func switchView(question: SurveyQuestion) -> some View {
@@ -81,11 +97,11 @@ public struct SurveyView: View {
         case .binaryChoice:
             return AnyView(BinaryQuestionView(question: question, response: $response))
         case .multipleChoiceQuestion:
-            return AnyView(MultipleChoiceQuestionView(question: question, response: $response))
+            return AnyView(MultipleChoiceQuestionView(question: question, response: $response, colors: colors))
         case .inlineQuestionGroup:
             return AnyView(InlineMultipleChoiceQuestionGroupView(question: question))
         case .contactForm:
-            return AnyView(ContactFormQuestionView(question: question, response: $response))
+            return AnyView(ContactFormQuestionView(question: question, response: $response, colors: colors))
         case .commentsForm:
             return AnyView(CommentsFormQuestionView(question: question))
         default:

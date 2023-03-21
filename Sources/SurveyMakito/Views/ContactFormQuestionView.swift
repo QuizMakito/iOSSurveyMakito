@@ -52,7 +52,7 @@ public struct ContactFormQuestionView: View {
 
     @State private var contact: Contact = Contact()
     @Binding var response: SurveyResponse
-
+    public let colors: SurveyColors
     public var body: some View {
         VStack(alignment: .center) {
             Text(question.title)
@@ -164,7 +164,7 @@ public extension ContactFormQuestionView {
         let question = SurveyQuestion(
             contactFormQuestion: contactQuestion
         )
-        return ContactFormQuestionView(question: question, response: .constant(SurveyResponse()))
+        return ContactFormQuestionView(question: question, response: .constant(SurveyResponse()), colors: SurveyColors())
     }
 }
 

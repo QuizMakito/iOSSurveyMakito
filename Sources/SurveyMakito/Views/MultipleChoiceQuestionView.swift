@@ -14,6 +14,7 @@ public struct MultipleChoiceQuestionView: View {
 
     public let question: SurveyQuestion
     @Binding var response: SurveyResponse
+    public let colors: SurveyColors
 
     public var body: some View {
         VStack(alignment: .leading) {
@@ -30,7 +31,7 @@ public struct MultipleChoiceQuestionView: View {
                                 }) {
                                     HStack {
                                         Circle()
-                                            .fill(appearsIn(choice) ? Color.DesignSystem.fuschia1 : Color.DesignSystem.neutralGrey5)
+                                            .fill(appearsIn(choice) ? colors.active : colors.inactive)
                                             .frame(width: 30, height: 30)
                                             .padding(.leading, 20)
                                             .overlay(
@@ -49,7 +50,7 @@ public struct MultipleChoiceQuestionView: View {
                                     }
                                     .background(
                                         RoundedRectangle(cornerRadius: 40)
-                                            .stroke( appearsIn(choice) ? Color.DesignSystem.fuschia1 : Color.DesignSystem.neutralGrey5, lineWidth: 2)
+                                            .stroke( appearsIn(choice) ? colors.active : colors.inactive, lineWidth: 2)
                                     )
                                 }
                             }
