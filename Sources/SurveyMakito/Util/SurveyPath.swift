@@ -10,5 +10,6 @@ import Foundation
 public struct SurveyPath {
     public struct Firestore {
         static let surveys = "Surveys"
+        static let userSurvey = "UserSurveys"
     }
 }

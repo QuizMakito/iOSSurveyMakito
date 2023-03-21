@@ -132,3 +132,9 @@ public struct DefaultBinaryQuestionStrategy: DefaultCodableStrategy {
 }
 
 public typealias DefaultEmptyBinaryQuestion = DefaultCodable<DefaultBinaryQuestionStrategy>
+
+public struct DefaultSurveyResponsesStrategy: DefaultCodableStrategy {
+    public static var defaultValue: [String: SurveyResponse]? { return [:] }
+}
+
+public typealias DefaultEmptySurveyResponsesStrategy = DefaultCodable<DefaultSurveyResponsesStrategy>

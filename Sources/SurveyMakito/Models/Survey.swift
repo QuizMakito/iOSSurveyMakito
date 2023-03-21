@@ -26,3 +26,19 @@ public struct Survey: Codable, Firestorable, Identifiable, Hashable {
         self.questions = questions
     }
 }
+
+public struct UserSurvey: Codable, Firestorable, Identifiable, Hashable {
+    @DocumentID public var id: String?
+    @DefaultEmptyString public var uid: String
+    @DefaultEmptySurveyResponsesStrategy public var responses: [String: SurveyResponse]?
+
+    public init(
+        id: String? = nil,
+        uid: String? = nil,
+        responses: [String: SurveyResponse] = [:]
+    ) {
+        self.id = id
+        self.uid = uid ?? ""
+        self.responses = responses
+    }
+}

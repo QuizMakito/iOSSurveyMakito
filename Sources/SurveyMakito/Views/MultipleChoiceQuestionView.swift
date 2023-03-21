@@ -14,7 +14,6 @@ public struct MultipleChoiceQuestionView: View {
 
     public let question: SurveyQuestion
     @Binding var response: SurveyResponse
-    @Binding var isAnimating: Bool
 
     public var body: some View {
         VStack(alignment: .leading) {
@@ -23,7 +22,7 @@ public struct MultipleChoiceQuestionView: View {
                 .padding(.bottom, 10)
             if let multiChoices = question.multipleChoice {
                 ForEach(multiChoices, id: \.uid) { multipleChoiceQuestion in
-                    VStack(alignment: .leading, spacing: 5) {
+                    VStack(alignment: .leading, spacing: 20) {
                         if let choiceQuestions = multipleChoiceQuestion.choices {
                             ForEach(choiceQuestions, id: \.uid) { choice in
                                 Button(action: {
@@ -31,11 +30,11 @@ public struct MultipleChoiceQuestionView: View {
                                 }) {
                                     HStack {
                                         Circle()
-                                            .fill(appearsIn(choice) ? Color.green : Color(.systemGray5))
+                                            .fill(appearsIn(choice) ? Color.DesignSystem.fuschia1 : Color.DesignSystem.neutralGrey5)
                                             .frame(width: 30, height: 30)
                                             .padding(.leading, 20)
                                             .overlay(
-                                                choice.selected ?
+                                                appearsIn(choice) ?
                                                     Image(systemName: "checkmark")
                                                     .foregroundColor(.white)
                                                     .padding(.leading, 20)
@@ -48,6 +47,10 @@ public struct MultipleChoiceQuestionView: View {
                                             .padding()
                                         Spacer()
                                     }
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 40)
+                                            .stroke( appearsIn(choice) ? Color.DesignSystem.fuschia1 : Color.DesignSystem.neutralGrey5, lineWidth: 2)
+                                    )
                                 }
                             }
                         }
@@ -55,29 +58,30 @@ public struct MultipleChoiceQuestionView: View {
                 }
             }
         }
-        .onChange(of: isAnimating) { underAnimation in
-            guard !underAnimation else { return }
-            guard let surveyResponse = surveyService.responses[question.uid] else { return }
-            selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
-        }
         .onChange(of: responseId) { _ in
             print(responseId)
             // choiceLookup = surveyService.getMultipleChoiceResponses(from: )
 
         }
         .onChange(of: selectedIndices) { _ in
+
             let values = selectedIndices.reduce(into: [:]) { result, response in
                 result[response.uid] = Failable(value: response.text)
             }
 
             response = SurveyResponse(
-                uid: responseId,
+                uid: UUID().uuidString,
                 questionId: question.uid,
                 type: .multipleChoiceQuestion,
                 values: values
             )
-
         }
+    }
+
+    func loadIndices() -> some View {
+        guard let surveyResponse = surveyService.responses[question.uid] else { return EmptyView() }
+        selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
+        return EmptyView()
     }
 
     func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
@@ -154,6 +158,10 @@ struct MultipleChoiceQuestionView_Previews: PreviewProvider {
     static let survey = Survey(uid: "abcd-1234", questions: [question])
 
     static var previews: some View {
-        SurveyView(survey: .constant(survey), index: .constant(0))
+        SurveyView(
+            survey: .constant(survey),
+            index: .constant(0),
+            event: .constant(.invoke),
+            userId: "12345")
     }
 }

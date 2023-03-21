@@ -31,16 +31,25 @@ public final class SurveyService: ObservableObject {
         ])
     }
 
+    @MainActor
+    func submitSurvey(for uid: String) async throws {
+        let userSurvey = UserSurvey(
+            id: uid,
+            uid: uid,
+            responses: responses)
+        try await FirestoreManager.update(userSurvey, withUid: userSurvey.uid, atPath: SurveyPath.Firestore.userSurvey)
+    }
+
     public func addResponse(response: SurveyResponse) throws {
         guard response.questionId != "" else { throw SurveyError.keyIsEmpty }
         responses[response.questionId] = response
     }
 
-    public func setResponseId(_ questionUID: String, _ token: String) -> Int {
+    public func setResponseId(_ questionUID: String, _ token: String) -> String {
         var hasher = Hasher()
         hasher.combine(questionUID)
         hasher.combine(token)
-        return hasher.finalize()
+        return String(hasher.finalize())
     }
 
     public func log() {

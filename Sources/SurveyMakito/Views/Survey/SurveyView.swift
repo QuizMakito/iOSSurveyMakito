@@ -7,41 +7,73 @@
 import SwiftUI
 import Combine
 
+public enum SurveyEvent {
+    case next
+    case back
+    case submit
+    case invoke
+}
+
 struct PreviewStruct: View {
     @State var index: Int = 0
     @State public var survey: Survey
-
+    @State public var event: SurveyEvent = .invoke
+    @State public var showingSheet: Bool = false
     var body: some View {
         VStack {
-            SurveyView(survey: $survey, index: $index)
+            Button(action: {
+                showingSheet = true
+            }, label: {
+                Text("Show Survey")
+                    .foregroundColor(.white)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .frame(minWidth: 200, maxWidth: .infinity, minHeight: 40)
+                            .foregroundColor(.blue)
+                            .padding(10)
+                    )
+            })
+            //
+        }
+        .sheet(isPresented: $showingSheet) {
+            SurveyView(survey: $survey, index: $index, event: $event, userId: "12345")
         }
         .onChange(of: index, perform: { val in
             print(val)
         })
+
     }
 }
 
 public struct SurveyView: View {
+
     @Namespace private var namespace
     @State private var isAnimating = false
-    @State public var surveyService: SurveyService
+    @ObservedObject public var surveyService: SurveyService
 
     // A single response that comes from a question
     @State var response: SurveyResponse = SurveyResponse()
 
     @Binding public var survey: Survey
     @Binding public var index: Int
+    @Binding public var event: SurveyEvent
+    public let userId: String
     static let log = Logger("SurveyMakito")
     @State public var showAlert: Bool = false
-    @State public var counter: Int = 0
+    @Environment(\.dismiss) var dismiss
+
     public init(
         surveyService: SurveyService = SurveyService(),
         survey: Binding<Survey>,
-        index: Binding<Int>
+        index: Binding<Int>,
+        event: Binding<SurveyEvent>,
+        userId: String
     ) {
         self.surveyService = surveyService
         self._survey = survey
         self._index = index
+        self._event = event
+        self.userId = userId
     }
 
     func switchView(question: SurveyQuestion) -> some View {
@@ -49,7 +81,7 @@ public struct SurveyView: View {
         case .binaryChoice:
             return AnyView(BinaryQuestionView(question: question, response: $response))
         case .multipleChoiceQuestion:
-            return AnyView(MultipleChoiceQuestionView(question: question, response: $response, isAnimating: $isAnimating))
+            return AnyView(MultipleChoiceQuestionView(question: question, response: $response))
         case .inlineQuestionGroup:
             return AnyView(InlineMultipleChoiceQuestionGroupView(question: question))
         case .contactForm:
@@ -74,7 +106,7 @@ public struct SurveyView: View {
     }
 
     public var body: some View {
-        SurveyWrap(color: .gray) {
+        SurveyWrap(color: .white) {
             ScrollView {
                 if isAnimating {
                     if let questions = survey.questions {
@@ -90,22 +122,42 @@ public struct SurveyView: View {
             }
         } footer: {
             VStack {
-                Text("count: \(counter)")
                 HStack {
                     if let questions = survey.questions {
-                        SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating)
+                        SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating, event: $event)
 
                     }
                 }
             }
         }
+        .onChange(of: index) { _ in
+            guard let question = survey.questions?[index] else { return }
+            if let response = surveyService.responses[question.uid] {
+                self.response = response
+
+            }
+        }
         .onChange(of: response) { _ in
-            counter = surveyService.responses.keys.count
             do {
                 try surveyService.addResponse(response: response)
                 surveyService.log()
             } catch {
                 showAlert = true
+            }
+        }
+        .onChange(of: event) { value in
+            switch value {
+            case .submit:
+                Task {
+                    do {
+                        try await surveyService.submitSurvey(for: userId)
+                        dismiss()
+                    } catch {
+                        print(error)
+                        dismiss()
+                    }
+                }
+            default: print(value)
             }
         }
         .alert(isPresented: $showAlert) {

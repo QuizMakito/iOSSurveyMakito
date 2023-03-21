@@ -12,20 +12,34 @@ public struct BinaryQuestionView: View {
     let question: SurveyQuestion
     @State var checked: Bool = false
     @Binding var response: SurveyResponse
+
+    func setResponse() -> EmptyView {
+        guard let item = surveyService.responses[question.uid] else { return EmptyView() }
+        self.response = item
+        return EmptyView()
+    }
+
+    func chosen(choice: MultipleChoiceResponse) -> Bool {
+        guard let item = surveyService.responses[question.uid] else { return false }
+        return item.uid == choice.uid
+    }
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(question.title)
                 .font(.headline)
                 .foregroundColor(.white)
                 .padding(.bottom)
+            setResponse()
             if let choices = question.binaryQuestion?.choices {
                 ForEach(choices, id: \.uid) { choice in
                     Button(action: {
+                        let token = surveyService.setResponseId(question.uid, choice.text)
                         // surveyService.setBinaryQuestionResponse(uid: question.uid, choiceUid: choice.uid)
                         response = SurveyResponse(uid: choice.uid,
                                                   questionId: question.uid,
                                                   type: .binaryChoice, values: [
-                                                    "choice.text": Failable(uid: choice.uid, value: "selected")
+                                                    token: Failable(uid: choice.uid, value: "selected")
                                                   ])
 
                     }) {
@@ -33,7 +47,7 @@ public struct BinaryQuestionView: View {
                             Text(choice.text)
                                 .foregroundColor(.white)
                             Spacer()
-                            if choice.uid == response.uid {
+                            if chosen(choice: choice) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundColor(.white)
                             } else {

@@ -22,6 +22,7 @@ public struct SurveyWrap<C: View, F: View>: View {
     public var bgImage: Image?
     public var content: () -> C
     public var footer: () -> F
+
     public var body: some View {
         ZStack {
             background

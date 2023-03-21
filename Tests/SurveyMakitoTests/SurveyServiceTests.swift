@@ -47,6 +47,25 @@ final class SurveyServiceTests: XCTestCase {
         XCTAssertEqual(items.count, 2)
     }
 
+    func testGetMultiChoice() {
+        let aResponse = Uids.a.response
+        let bResponse = Uids.d.response
+
+        // Test adding a single response
+        try? service.addResponse(response: aResponse)
+
+        // Test adding another response for the same survey
+        try? service.addResponse(response: bResponse)
+
+        let reOccuringQuestion = service.responses[aResponse.questionId]
+        let items = service.getMultipleChoiceResponses(from: reOccuringQuestion!)
+        XCTAssertEqual(items.count, 2)
+
+        let bQuestion = service.responses[bResponse.questionId]
+        let bItems = service.getMultipleChoiceResponses(from: bQuestion!)
+        XCTAssertEqual(bItems.count, 3)
+    }
+
     func testLookUpQuiz() {
         let aResponse = Uids.a.response
         let bResponse = Uids.b.response
@@ -123,7 +142,7 @@ enum Uids: String {
                                   ])
         case .d:
             return SurveyResponse(uid: Uids.d.rawValue,
-                                  questionId: SurveyView.survey.questions![0].uid,
+                                  questionId: SurveyView.survey.questions![4].uid,
                                   type: .multipleChoiceQuestion, values: [
                                     UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option A"),
                                     UUID().uuidString: Failable(uid: UUID().uuidString, value: "Option B"),

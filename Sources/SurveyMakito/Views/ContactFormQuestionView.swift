@@ -54,96 +54,92 @@ public struct ContactFormQuestionView: View {
     @Binding var response: SurveyResponse
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            /*
-             if let choices = question.choices {
+        VStack(alignment: .center) {
+            Text(question.title)
+                .font(.title2)
+            VStack(alignment: .leading, spacing: 20) {
+
+                /*
+                 if let choices = question.choices {
 
 
-             Text(question.title)
-             .font(.headline)
+                 Text(question.title)
+                 .font(.headline)
 
-             MultipleChoiceResponseListView(
-             choices: question.choices,
-             selectedChoices: $selectedChoices
+                 MultipleChoiceResponseListView(
+                 choices: question.choices,
+                 selectedChoices: $selectedChoices
 
-             }
-             )*/
-            Text("Email Address")
-                .font(.headline)
-            TextField("Email Address", text: $emailAddress)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                 }
+                 )*/
 
-            Text("Name")
-                .font(.headline)
-            TextField("Name", text: $name)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                Text("Email Address")
+                    .font(.headline)
+                TextField("Email Address", text: $emailAddress)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
 
-            Text("Company")
-                .font(.headline)
-            TextField("Company", text: $company)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                Text("Name")
+                    .font(.headline)
+                TextField("Name", text: $name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
 
-            Text("Phone Number")
-                .font(.headline)
-            TextField("Phone Number", text: $phoneNumber)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                Text("Feedback")
+                    .font(.headline)
+                TextEditor(text: $feedback)
+                    .frame(minHeight: 100)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
 
-            Text("Feedback")
-                .font(.headline)
-            TextEditor(text: $feedback)
-                .frame(minHeight: 100)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            }
+            .padding()
+            .onChange(of: selectedChoices) { _ in
 
-        }
-        .padding()
-        .onChange(of: selectedChoices) { _ in
-
-            /*
-             surveyService.updateContactFormQuestionResponse(
-             uid: question.uid,
-             choices: selected
-             )*/
-        }
-        .onChange(of: emailAddress) { value in
-            contact = contact.changing(path: \.emailAddress, to: value)
-            /*
-             surveyService.updateContactFormQuestionResponse(
-             uid: question.uid,
-             emailAddress: newValue
-             )*/
-        }
-        .onChange(of: name) { value in
-            contact = contact.changing(path: \.name, to: value)
-            /*
-             surveyService.updateContactFormQuestionResponse(
-             uid: question.uid,
-             name: newValue
-             )*/
-        }
-        .onChange(of: company) { value in
-            contact = contact.changing(path: \.company, to: value)
-            /*
-             surveyService.updateContactFormQuestionResponse(
-             uid: question.uid,
-             company: newValue
-             )*/
-        }
-        .onChange(of: phoneNumber) { value in
-            contact = contact.changing(path: \.phoneNumber, to: value)
-            /*
-             surveyService.updateContactFormQuestionResponse(
-             uid: question.uid,
-             phoneNumber: newValue
-             )*/
-        }
-        .onChange(of: feedback) { value in
-            contact = contact.changing(path: \.feedback, to: value)
-            /*
-             surveyService.updateContactFormQuestionResponse(
-             uid: question.uid,
-             feedback: newValue
-             )
-             */
+                /*
+                 surveyService.updateContactFormQuestionResponse(
+                 uid: question.uid,
+                 choices: selected
+                 )*/
+            }
+            .onChange(of: emailAddress) { value in
+                contact = contact.changing(path: \.emailAddress, to: value)
+                /*
+                 surveyService.updateContactFormQuestionResponse(
+                 uid: question.uid,
+                 emailAddress: newValue
+                 )*/
+            }
+            .onChange(of: name) { value in
+                contact = contact.changing(path: \.name, to: value)
+                /*
+                 surveyService.updateContactFormQuestionResponse(
+                 uid: question.uid,
+                 name: newValue
+                 )*/
+            }
+            .onChange(of: company) { value in
+                contact = contact.changing(path: \.company, to: value)
+                /*
+                 surveyService.updateContactFormQuestionResponse(
+                 uid: question.uid,
+                 company: newValue
+                 )*/
+            }
+            .onChange(of: phoneNumber) { value in
+                contact = contact.changing(path: \.phoneNumber, to: value)
+                /*
+                 surveyService.updateContactFormQuestionResponse(
+                 uid: question.uid,
+                 phoneNumber: newValue
+                 )*/
+            }
+            .onChange(of: feedback) { value in
+                contact = contact.changing(path: \.feedback, to: value)
+                /*
+                 surveyService.updateContactFormQuestionResponse(
+                 uid: question.uid,
+                 feedback: newValue
+                 )
+                 */
+            }
         }
     }
 }
