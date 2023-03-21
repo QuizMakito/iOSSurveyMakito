@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+/*
 public extension Color {
     /// Namespace to prevent naming collisions with static accessors on
     /// SwiftUI's Color.
@@ -46,3 +46,4 @@ public extension Color {
         public static let tint = Color(red: 203/255, green: 199/255, blue: 241/255)
     }
 }
+*/
