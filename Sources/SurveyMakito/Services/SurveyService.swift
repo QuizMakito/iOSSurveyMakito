@@ -14,9 +14,9 @@ import Combine
 
 public final class SurveyService: ObservableObject {
 
-    @Published var surveys: [Survey] = [Survey]()
-    @Published var responses: [String: SurveyResponse] = [:]
-    @Published var surveyable: Bool = true
+    @Published public var surveys: [Survey] = [Survey]()
+    @Published public var responses: [String: SurveyResponse] = [:]
+    @Published public var surveyable: Bool = true
 
     public var cancellables: Set<AnyCancellable> = []
 
