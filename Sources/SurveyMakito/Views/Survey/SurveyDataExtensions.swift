@@ -173,15 +173,11 @@ extension PreviewStruct {
                 multipleChoice: [MultipleChoiceQuestion(
                     uid: "FDA1C732-5E02-4001-BE0A-F72584823BE1",
                     choices: [
-                        MultipleChoiceResponse(uid: "F4028037-72FD-402B-B16B-4552DDB1ACBC", text: "2-5"),
-                        MultipleChoiceResponse(uid: "21125EF8-4E78-428E-A061-4E054E938AD5", text: "6-10"),
-                        MultipleChoiceResponse(uid: "83F20354-99E7-4E2F-AED3-D7414D2F294E", text: "11-17"),
-                        MultipleChoiceResponse(uid: "4F2E95E4-3A75-41DE-AADD-78B2980A1396", text: "18-24"),
-                        MultipleChoiceResponse(uid: "8E2CFDA1-9E31-44DE-A135-6CDB4E390E10", text: "25-34"),
-                        MultipleChoiceResponse(uid: "AA3D9E78-FD34-45A4-B7BA-AEBC1D51E10C", text: "35-44"),
-                        MultipleChoiceResponse(uid: "194E55AC-C962-4BC3-9DD0-EE99AC32BE49", text: "45-54"),
-                        MultipleChoiceResponse(uid: "F6FD5EEB-E3D3-4E0B-8FD5-A9D53C0C5D2F", text: "55-64"),
-                        MultipleChoiceResponse(uid: "74E881DD-CD9A-476F-9660-AECEC0951BD2", text: "65+")
+                        MultipleChoiceResponse(uid: "21125EF8-4E78-428E-A061-4E054E938AD5", text: "10 and below"),
+                        MultipleChoiceResponse(uid: "83F20354-99E7-4E2F-AED3-D7414D2F294E", text: "11-26"),
+                        MultipleChoiceResponse(uid: "4F2E95E4-3A75-41DE-AADD-78B2980A1396", text: "27-42"),
+                        MultipleChoiceResponse(uid: "8E2CFDA1-9E31-44DE-A135-6CDB4E390E10", text: "43-58"),
+                        MultipleChoiceResponse(uid: "AA3D9E78-FD34-45A4-B7BA-AEBC1D51E10C", text: "59 and above")
                     ],
                     allowsMultipleSelection: false
                 )]

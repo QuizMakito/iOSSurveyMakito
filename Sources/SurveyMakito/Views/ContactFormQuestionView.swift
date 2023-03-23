@@ -7,13 +7,14 @@
 
 import SwiftUI
 
-public struct Contact {
+public struct Contact: Codable, Hashable {
     public var selectedChoices: [String: String]?
     public var emailAddress: String?
     public var name: String?
     public var company: String?
     public var phoneNumber: String?
     public var feedback: String?
+    public var responseUID: String = UUID().uuidString
 
     init(
         selectedChoices: [String: String]? = nil,
@@ -36,6 +37,29 @@ public struct Contact {
         clone[keyPath: path] = value
         return clone
     }
+
+    func toSurveyResponse(questionId: String) -> SurveyResponse {
+        var values: [String: Failable] = [:]
+        if let name = name {
+            values["name"] = Failable(value: name)
+        }
+        if let company = company {
+            values["company"] = Failable(value: company)
+        }
+        if let emailAddress = emailAddress {
+            values["emailAddress"] = Failable(value: emailAddress)
+        }
+        if let phoneNumber = phoneNumber {
+            values["phoneNumber"] = Failable(value: phoneNumber)
+        }
+        if let feedback = feedback {
+            values["feedback"] = Failable(value: feedback)
+        }
+
+        let surveyResponse = SurveyResponse(uid: responseUID, questionId: questionId, type: .contactForm, values: values)
+        return surveyResponse
+    }
+
 }
 
 public struct ContactFormQuestionView: View {
@@ -53,6 +77,7 @@ public struct ContactFormQuestionView: View {
     @State private var contact: Contact = Contact()
     @Binding var response: SurveyResponse
     public let colors: SurveyColors
+
     public var body: some View {
         VStack(alignment: .center) {
             Text(question.title)
@@ -139,6 +164,9 @@ public struct ContactFormQuestionView: View {
                  feedback: newValue
                  )
                  */
+            }
+            .onChange(of: contact) { _ in
+                response = contact.toSurveyResponse(questionId: question.uid)
             }
         }
     }
