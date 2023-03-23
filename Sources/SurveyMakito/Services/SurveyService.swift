@@ -16,7 +16,7 @@ public final class SurveyService: ObservableObject {
 
     @Published public var surveys: [Survey] = [Survey]()
     @Published public var responses: [String: SurveyResponse] = [:]
-    @Published public var surveyable: Bool = true
+    @Published public var surveyable: Bool = false
 
     public var cancellables: Set<AnyCancellable> = []
 

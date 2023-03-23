@@ -78,30 +78,24 @@ public struct ContactFormQuestionView: View {
     @Binding var response: SurveyResponse
     public let colors: SurveyColors
 
+    private let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
+
+    private var isEmailValid: Bool {
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: emailAddress)
+    }
+
     public var body: some View {
         VStack(alignment: .center) {
             Text(question.title)
                 .font(.title2)
             VStack(alignment: .leading, spacing: 20) {
 
-                /*
-                 if let choices = question.choices {
-
-
-                 Text(question.title)
-                 .font(.headline)
-
-                 MultipleChoiceResponseListView(
-                 choices: question.choices,
-                 selectedChoices: $selectedChoices
-
-                 }
-                 )*/
-
                 Text("Email Address")
                     .font(.headline)
                 TextField("Email Address", text: $emailAddress)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .foregroundColor(isEmailValid ? .primary : .red)
 
                 Text("Name")
                     .font(.headline)
@@ -116,54 +110,20 @@ public struct ContactFormQuestionView: View {
 
             }
             .padding()
-            .onChange(of: selectedChoices) { _ in
-
-                /*
-                 surveyService.updateContactFormQuestionResponse(
-                 uid: question.uid,
-                 choices: selected
-                 )*/
-            }
             .onChange(of: emailAddress) { value in
                 contact = contact.changing(path: \.emailAddress, to: value)
-                /*
-                 surveyService.updateContactFormQuestionResponse(
-                 uid: question.uid,
-                 emailAddress: newValue
-                 )*/
             }
             .onChange(of: name) { value in
                 contact = contact.changing(path: \.name, to: value)
-                /*
-                 surveyService.updateContactFormQuestionResponse(
-                 uid: question.uid,
-                 name: newValue
-                 )*/
             }
             .onChange(of: company) { value in
                 contact = contact.changing(path: \.company, to: value)
-                /*
-                 surveyService.updateContactFormQuestionResponse(
-                 uid: question.uid,
-                 company: newValue
-                 )*/
             }
             .onChange(of: phoneNumber) { value in
                 contact = contact.changing(path: \.phoneNumber, to: value)
-                /*
-                 surveyService.updateContactFormQuestionResponse(
-                 uid: question.uid,
-                 phoneNumber: newValue
-                 )*/
             }
             .onChange(of: feedback) { value in
                 contact = contact.changing(path: \.feedback, to: value)
-                /*
-                 surveyService.updateContactFormQuestionResponse(
-                 uid: question.uid,
-                 feedback: newValue
-                 )
-                 */
             }
             .onChange(of: contact) { _ in
                 response = contact.toSurveyResponse(questionId: question.uid)
