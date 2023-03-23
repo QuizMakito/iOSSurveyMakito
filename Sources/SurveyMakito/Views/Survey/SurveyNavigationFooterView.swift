@@ -44,10 +44,7 @@ struct SurveyNavigationFooterView: View {
                 Button(action: {
                     event = .submit
                 }) {
-                    Text("Submit Survey")
-                        .font(.headline)
-                        .foregroundColor(buttonTextColor)
-                        .frame(maxWidth: .infinity)
+                    buttonView(label: "Submit Survey")
                 }
                 .padding()
                 .background(buttonBackgroundColor)
@@ -70,19 +67,22 @@ struct SurveyNavigationFooterView: View {
                     }
 
                 }) {
-                    Text("Next")
-                        .font(.headline)
-                        .foregroundColor(buttonTextColor)
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .foregroundColor(buttonBackgroundColor)
-
-                        )
+                    buttonView(label: "Next")
                 }
                 .opacity(questions.isEmpty || index >= (questions.count - 1) ? 0 : 1)
             }
         }
+    }
+
+    func buttonView(label: String) -> some View {
+        Text(label)
+            .foregroundColor(.white)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(minWidth: 200, maxWidth: .infinity, minHeight: 40)
+                    .foregroundColor(.blue)
+                    .padding(10)
+            )
     }
 }
 
