@@ -16,6 +16,7 @@ public final class SurveyService: ObservableObject {
 
     @Published var surveys: [Survey] = [Survey]()
     @Published var responses: [String: SurveyResponse] = [:]
+    @Published var surveyable: Bool = true
 
     public var cancellables: Set<AnyCancellable> = []
 
@@ -29,6 +30,15 @@ public final class SurveyService: ObservableObject {
         surveys = try await FirestoreManager.query(path: SurveyPath.Firestore.surveys, queryItems: [
             QueryItem("isActive", .isEqualTo, true)
         ])
+    }
+
+    @MainActor
+    public func hasUserTakenSurvey(userId: String) async throws {
+        if let set = try await FirestoreManager<UserSurvey>.read(
+            atPath: SurveyPath.Firestore.userSurvey,
+            uid: userId).responses {
+            surveyable = set.isEmpty
+        }
     }
 
     @MainActor
