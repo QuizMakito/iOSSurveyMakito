@@ -34,11 +34,10 @@ public final class SurveyService: ObservableObject {
 
     @MainActor
     public func hasUserTakenSurvey(userId: String) async throws {
-        if let set = try await FirestoreManager<UserSurvey>.read(
-            atPath: SurveyPath.Firestore.userSurvey,
-            uid: userId).responses {
-            surveyable = set.isEmpty
-        }
+        surveyable = try await FirestoreManager<UserSurvey>.query(
+            path: SurveyPath.Firestore.userSurvey, queryItems: [
+                QueryItem("uid", .isEqualTo, userId)
+            ]).isEmpty
     }
 
     @MainActor
