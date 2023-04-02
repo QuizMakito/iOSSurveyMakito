@@ -12,7 +12,7 @@ struct SurveyNavigationFooterView: View {
     @Binding var index: Int
     @Binding var isAnimating: Bool
     @Binding var event: SurveyEvent
-
+    var shouldEnableNextButton = false
     private let buttonTextColor = Color.blue
     private let buttonBackgroundColor = Color.white
 
@@ -42,6 +42,8 @@ struct SurveyNavigationFooterView: View {
              */
             if index == questions.count - 1 {
                 Button(action: {
+                    if !shouldEnableNextButton{return}
+                    
                     event = .submit
                 }) {
                     buttonView(label: "Submit Survey")

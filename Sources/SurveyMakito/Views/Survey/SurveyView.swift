@@ -140,7 +140,7 @@ public struct SurveyView: View {
             VStack {
                 HStack {
                     if let questions = survey.questions {
-                        SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating, event: $event)
+                        SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating, event: $event, shouldEnableNextButton: !response.values.isEmpty)
 
                     }
                 }
