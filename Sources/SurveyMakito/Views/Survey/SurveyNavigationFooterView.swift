@@ -56,6 +56,7 @@ struct SurveyNavigationFooterView: View {
 
             if index < questions.count - 1 {
                 Button(action: {
+                    if !shouldEnableNextButton{return}
                     event = .next
                     withAnimation {
                         index = (index + 1) % questions.count
