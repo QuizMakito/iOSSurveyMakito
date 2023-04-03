@@ -42,6 +42,9 @@ struct SurveyNavigationFooterView: View {
              */
             if index == questions.count - 1 {
                 Button(action: {
+                    if questions[index].uid !=  response.questionId || response.values.isEmpty{
+                        return
+                    }
                     
                     event = .submit
                 }) {
@@ -55,6 +58,9 @@ struct SurveyNavigationFooterView: View {
 
             if index < questions.count - 1 {
                 Button(action: {
+                    if questions[index].uid !=  response.questionId || response.values.isEmpty{
+                        return
+                    }
                     event = .next
                     withAnimation {
                         index = (index + 1) % questions.count
