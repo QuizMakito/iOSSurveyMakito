@@ -12,7 +12,7 @@ struct SurveyNavigationFooterView: View {
     @Binding var index: Int
     @Binding var isAnimating: Bool
     @Binding var event: SurveyEvent
-    var shouldEnableNextButton = false
+    @Binding var response: SurveyResponse
     private let buttonTextColor = Color.blue
     private let buttonBackgroundColor = Color.white
 
@@ -42,7 +42,6 @@ struct SurveyNavigationFooterView: View {
              */
             if index == questions.count - 1 {
                 Button(action: {
-                    if !shouldEnableNextButton{return}
                     
                     event = .submit
                 }) {
@@ -56,7 +55,6 @@ struct SurveyNavigationFooterView: View {
 
             if index < questions.count - 1 {
                 Button(action: {
-                    if !shouldEnableNextButton{return}
                     event = .next
                     withAnimation {
                         index = (index + 1) % questions.count
@@ -95,6 +93,6 @@ struct SurveyNavigationFooterView_Previews: PreviewProvider {
             questions: [SurveyQuestion(), SurveyQuestion()],
             index: .constant(0),
             isAnimating: .constant(false),
-            event: .constant(.invoke))
+            event: .constant(.invoke), response: .constant(SurveyResponse()))
     }
 }
