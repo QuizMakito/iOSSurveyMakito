@@ -32,6 +32,7 @@ struct PreviewStruct: View {
     @State public var survey: Survey
     @State public var event: SurveyEvent = .invoke
     @State public var showingSheet: Bool = false
+
     var body: some View {
         VStack {
             Button(action: {
@@ -66,6 +67,8 @@ public struct SurveyView: View {
 
     // A single response that comes from a question
     @State var response: SurveyResponse = SurveyResponse()
+
+    @State public var allowNext: Bool = false
 
     @Binding public var survey: Survey
     @Binding public var index: Int
@@ -113,9 +116,7 @@ public struct SurveyView: View {
         AnyView(
             LazyVStack(spacing: 20) {
                 if let questions = survey.questions {
-                    if let question = questions[index] {
-                        switchView(question: question)
-                    }
+                    switchView(question: questions[index])
                 }
             }.padding()
         )
@@ -141,7 +142,6 @@ public struct SurveyView: View {
                 HStack {
                     if let questions = survey.questions {
                         SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating, event: $event)
-
                     }
                 }
             }
