@@ -31,7 +31,8 @@ struct PreviewStruct: View {
     @State var index: Int = 0
     @State public var survey: Survey
     @State public var event: SurveyEvent = .invoke
-    @State public var showingSheet: Bool = false
+    //TODO: Change to false at the end
+    @State public var showingSheet: Bool = true
 
     var body: some View {
         VStack {
@@ -143,14 +144,16 @@ public struct SurveyView: View {
                     if let questions = survey.questions {
                         SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating, event: $event)
                     }
-                }
-            }
+                }.padding(.bottom)
+                    .padding(15)
+            }.frame(maxWidth: .infinity)
+            .background(Color(.systemGray6))
         }
+        .transition(.move(edge: .leading))
         .onChange(of: index) { _ in
             guard let question = survey.questions?[index] else { return }
             if let response = surveyService.responses[question.uid] {
                 self.response = response
-
             }
         }
         .onChange(of: response) { _ in
@@ -184,12 +187,13 @@ public struct SurveyView: View {
             )
         }
         .navigationBarTitle("Survey", displayMode: .inline)
+        .edgesIgnoringSafeArea(.bottom)
     }
 }
 
 struct SurveyView_Previews: PreviewProvider {
     static var previews: some View {
         PreviewStruct.preview
-            .environmentObject(SurveyService())
+//            .environmentObject(SurveyService())
     }
 }
