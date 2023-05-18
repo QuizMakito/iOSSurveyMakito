@@ -29,7 +29,7 @@ public struct SurveyWrap<C: View, F: View>: View {
             VStack {
                 Spacer()
                 content()
-                Spacer()
+                Spacer(minLength: 0)
                 HStack {
                     footer()
                 }

@@ -16,6 +16,7 @@ public struct MultipleChoiceQuestionView: View {
     @Binding var response: SurveyResponse
     public let colors: SurveyColors
 
+
     public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
@@ -77,16 +78,18 @@ public struct MultipleChoiceQuestionView: View {
                 values: values
             )
         }
+        .onChange(of: question.uid) { newValue in
+            selectedIndices = response.values.compactMap({ MultipleChoiceResponse(uid: $0.value.uid, text: $0.value.value, selected: true)})
+        }
     }
 
-    func loadIndices() -> some View {
-        guard let surveyResponse = surveyService.responses[question.uid] else { return EmptyView() }
+    func loadIndices() {
+        guard let surveyResponse = surveyService.responses[question.uid] else { return }
         selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
-        return EmptyView()
     }
 
     func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
-        return selectedIndices.contains(selectedChoice)
+        return selectedIndices.contains(where: {$0.text == selectedChoice.text})
     }
 
     func selectChoice(_ selectedChoice: MultipleChoiceResponse, _ question: MultipleChoiceQuestion) {
@@ -120,8 +123,8 @@ public struct MultipleChoiceQuestionView: View {
     }
 
     private func toggleSelectedIndex(for selectedChoice: MultipleChoiceResponse) {
-        if selectedIndices.contains(selectedChoice) {
-            selectedIndices = selectedIndices.filter { $0 != selectedChoice }
+        if selectedIndices.contains(where: {$0.text == selectedChoice.text}) {
+            selectedIndices = selectedIndices.filter { $0.text != selectedChoice.text }
             return
         }
         selectedIndices.append(selectedChoice)

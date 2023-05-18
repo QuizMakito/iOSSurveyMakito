@@ -48,17 +48,6 @@ struct SurveyNavigationFooterView: View {
             if index < questions.count - 1 {
                 Button(action: {
                     event = .next
-                    withAnimation {
-                        index = (index + 1) % questions.count
-                        isAnimating = true
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                        withAnimation {
-                            isAnimating = false
-                        }
-                    }
-                    
                 }) {
                     buttonView(label: "Next")
                 }
