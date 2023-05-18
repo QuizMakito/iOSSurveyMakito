@@ -12,6 +12,7 @@ public enum SurveyEvent {
     case back
     case submit
     case invoke
+    case none
 }
 
 public struct SurveyColors {
@@ -31,7 +32,8 @@ struct PreviewStruct: View {
     @State var index: Int = 0
     @State public var survey: Survey
     @State public var event: SurveyEvent = .invoke
-    @State public var showingSheet: Bool = false
+    //TODO: Change to false at the end
+    @State public var showingSheet: Bool = true
 
     var body: some View {
         VStack {
@@ -60,10 +62,11 @@ struct PreviewStruct: View {
 }
 
 public struct SurveyView: View {
+    @State public var canGoNext = false
 
     @Namespace private var namespace
     @State private var isAnimating = false
-    @ObservedObject public var surveyService: SurveyService
+    @StateObject public var surveyService: SurveyService
 
     // A single response that comes from a question
     @State var response: SurveyResponse = SurveyResponse()
@@ -80,14 +83,13 @@ public struct SurveyView: View {
     @Environment(\.dismiss) var dismiss
 
     public init(
-        surveyService: SurveyService = SurveyService(),
         survey: Binding<Survey>,
         index: Binding<Int>,
         event: Binding<SurveyEvent>,
         userId: String,
         colors: SurveyColors = SurveyColors()
     ) {
-        self.surveyService = surveyService
+        self._surveyService = StateObject(wrappedValue: SurveyService())
         self._survey = survey
         self._index = index
         self._event = event
@@ -143,26 +145,36 @@ public struct SurveyView: View {
                     if let questions = survey.questions {
                         SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating, event: $event)
                     }
-                }
-            }
+                }.padding(.bottom)
+                    .padding(15)
+            }.frame(maxWidth: .infinity)
+            .background(Color(.systemGray6))
         }
+        .transition(.move(edge: .leading))
         .onChange(of: index) { _ in
             guard let question = survey.questions?[index] else { return }
             if let response = surveyService.responses[question.uid] {
                 self.response = response
-
             }
         }
-        .onChange(of: response) { _ in
-            do {
-                try surveyService.addResponse(response: response)
-                surveyService.log()
-            } catch {
-                showAlert = true
+        .onChange(of: response) { res in
+            if response != SurveyResponse() {
+                do {
+                    try surveyService.addResponse(response: response)
+                } catch {
+                    showAlert = true
+                }
             }
+            canGoNext = !response.values.values.isEmpty
+            event = .none
         }
         .onChange(of: event) { value in
             switch value {
+            case .next:
+                guard let question = survey.questions?[index] else { return }
+                if question.isRequired && canGoNext {
+                    goNext()
+                }
             case .submit:
                 Task {
                     do {
@@ -184,12 +196,29 @@ public struct SurveyView: View {
             )
         }
         .navigationBarTitle("Survey", displayMode: .inline)
+        .edgesIgnoringSafeArea(.bottom)
+    }
+    
+    func goNext() {
+        guard let questions = survey.questions else { return }
+        withAnimation {
+            index = (index + 1) % questions.count
+            isAnimating = true
+            canGoNext = false
+            response = SurveyResponse()
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            withAnimation {
+                isAnimating = false
+            }
+        }
     }
 }
 
 struct SurveyView_Previews: PreviewProvider {
     static var previews: some View {
         PreviewStruct.preview
-            .environmentObject(SurveyService())
+//            .environmentObject(SurveyService())
     }
 }
