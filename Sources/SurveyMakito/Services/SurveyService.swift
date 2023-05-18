@@ -73,11 +73,7 @@ public final class SurveyService: ObservableObject {
         }
 
         let responses = response.values.values.compactMap { failable -> MultipleChoiceResponse? in
-            guard let text = failable.value as? String else {
-                return nil
-            }
-
-            return MultipleChoiceResponse(text: text, selected: true)
+            return MultipleChoiceResponse(text: failable.value, selected: true)
         }
 
         return responses

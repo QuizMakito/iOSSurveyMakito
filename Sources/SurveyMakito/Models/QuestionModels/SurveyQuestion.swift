@@ -24,6 +24,7 @@ public struct SurveyQuestion: Codable, Hashable, Identifiable {
     @DefaultEmptyString public var title: String
     @DefaultEmptyString public var tag: String
     @DefaultEmptySurveyItemType public var type: SurveyItemType?
+    @DefaultEmptyIsRequired public var isRequired: Bool
 
     // Multiple Choice
     @DefaultMultipleChoiceQuestion public var multipleChoice: [MultipleChoiceQuestion]?
@@ -46,6 +47,7 @@ public struct SurveyQuestion: Codable, Hashable, Identifiable {
                 tag: String? = nil,
                 type: SurveyItemType? = nil,
                 surveyItemType: SurveyItemType? = .none,
+                isRequired: Bool? = nil,
                 multipleChoice: [MultipleChoiceQuestion]? = [],
                 inlineMultipleChoice: InlineMultipleChoiceQuestionGroup? = nil,
                 contactFormQuestion: ContactFormQuestion? = nil,
@@ -57,6 +59,7 @@ public struct SurveyQuestion: Codable, Hashable, Identifiable {
         self.title = title ?? ""
         self.tag = tag ?? ""
         self.type = type ?? nil
+        self.isRequired = isRequired ?? true
         self.multipleChoice = multipleChoice
         self.inlineMultipleChoice = inlineMultipleChoice
         self.contactFormQuestion = contactFormQuestion

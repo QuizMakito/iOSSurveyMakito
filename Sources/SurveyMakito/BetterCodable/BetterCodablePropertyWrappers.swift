@@ -138,3 +138,9 @@ public struct DefaultSurveyResponsesStrategy: DefaultCodableStrategy {
 }
 
 public typealias DefaultEmptySurveyResponsesStrategy = DefaultCodable<DefaultSurveyResponsesStrategy>
+
+public typealias DefaultEmptyIsRequired = DefaultCodable<DefaultTrueStrategy>
+
+public struct DefaultEmptyIsRequiredStratedy: DefaultCodableStrategy {
+    public static var defaultValue: Bool? { return nil }
+}
