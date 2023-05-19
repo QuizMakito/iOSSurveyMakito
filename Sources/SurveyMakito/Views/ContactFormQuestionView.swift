@@ -89,7 +89,7 @@ public struct ContactFormQuestionView: View {
             Text(question.title)
                 .font(.title2)
             VStack(alignment: .leading, spacing: 20) {
-
+                
                 Text("Email Address")
                     .font(.headline)
                 TextField("Email Address", text: $emailAddress, onEditingChanged: { isChanged in
@@ -191,3 +191,4 @@ struct ContactFormQuestionView_Previews: PreviewProvider {
             .environmentObject(SurveyService())
     }
 }
+
