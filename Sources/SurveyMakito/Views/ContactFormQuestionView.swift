@@ -75,60 +75,88 @@ public struct ContactFormQuestionView: View {
     @State private var feedback: String = ""
 
     @State private var contact: Contact = Contact()
-    @Binding var response: SurveyResponse
+    @Binding public var response: SurveyResponse
     public let colors: SurveyColors
-
-    private let emailRegex = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$"
-
-    private var isEmailValid: Bool {
-        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        return emailPredicate.evaluate(with: emailAddress)
-    }
+    
+    @State private var isEmailValid : Bool = true
+    @Binding public var canGoNext: Bool
+    
+    @State var emailIsFilled = false
+    @State var nameIsFilled = false
 
     public var body: some View {
         VStack(alignment: .center) {
             Text(question.title)
                 .font(.title2)
             VStack(alignment: .leading, spacing: 20) {
-
+                
                 Text("Email Address")
                     .font(.headline)
-                TextField("Email Address", text: $emailAddress)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .foregroundColor(isEmailValid ? .primary : .red)
-
+                TextField("Email Address", text: $emailAddress, onEditingChanged: { isChanged in
+                    if !isChanged {
+                        if isValidEmail(str: emailAddress) {
+                            self.isEmailValid = true
+                        } else {
+                            self.isEmailValid = false
+                            self.emailAddress = ""
+                        }
+                    }
+                })
+                .textFieldStyle(.roundedBorder)
+                .keyboardType(.emailAddress)
+                .textContentType(.emailAddress)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(isEmailValid ? .clear : .red, lineWidth: 2)
+                )
                 Text("Name")
                     .font(.headline)
                 TextField("Name", text: $name)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-
+                    .keyboardType(.namePhonePad)
+                    .textContentType(.name)
                 Text("Feedback")
                     .font(.headline)
-                TextEditor(text: $feedback)
-                    .frame(minHeight: 100)
+                TextField("Feedback", text: $feedback, axis: .vertical)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-
+                Spacer()
             }
             .padding()
-            .onChange(of: emailAddress) { value in
-                contact = contact.changing(path: \.emailAddress, to: value)
-            }
+            .onChange(of: emailAddress, perform: { value in
+                emailIsFilled = !value.isEmpty && isEmailValid
+            })
             .onChange(of: name) { value in
-                contact = contact.changing(path: \.name, to: value)
+                nameIsFilled = !value.isEmpty
             }
-            .onChange(of: company) { value in
-                contact = contact.changing(path: \.company, to: value)
-            }
-            .onChange(of: phoneNumber) { value in
-                contact = contact.changing(path: \.phoneNumber, to: value)
-            }
-            .onChange(of: feedback) { value in
-                contact = contact.changing(path: \.feedback, to: value)
-            }
+            .onChange(of: company) { value in }
+            .onChange(of: phoneNumber) { value in }
+            .onChange(of: feedback) { value in }
             .onChange(of: contact) { _ in
                 response = contact.toSurveyResponse(questionId: question.uid)
             }
+            .onChange(of: canGoNext, perform: { newValue in
+                contact = contact.changing(path: \.emailAddress, to: emailAddress)
+                contact = contact.changing(path: \.name, to: name)
+                contact = contact.changing(path: \.company, to: company)
+                contact = contact.changing(path: \.phoneNumber, to: phoneNumber)
+                contact = contact.changing(path: \.feedback, to: feedback)
+            })
+            .onChange(of: nameIsFilled, perform: { newValue in
+                canGoNext = newValue && emailIsFilled
+            })
+            .onChange(of: emailIsFilled, perform: { newValue in
+                canGoNext = newValue && nameIsFilled
+            }) 
+            .onAppear {
+                canGoNext = false
+            }
         }
+    }
+    func isValidEmail(str: String) -> Bool {
+        let emailRegEx = "^(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?(?:(?:(?:[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+(?:\\.[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+)*)|(?:\"(?:(?:(?:(?: )*(?:(?:[!#-Z^-~]|\\[|\\])|(?:\\\\(?:\\t|[ -~]))))+(?: )*)|(?: )+)\"))(?:@)(?:(?:(?:[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)(?:\\.[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)*)|(?:\\[(?:(?:(?:(?:(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))\\.){3}(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))))|(?:(?:(?: )*[!-Z^-~])*(?: )*)|(?:[Vv][0-9A-Fa-f]+\\.[-A-Za-z0-9._~!$&'()*+,;=:]+))\\])))(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?$"
+        let email = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let result = email.evaluate(with: str)
+        return result
     }
 }
 
@@ -152,7 +180,7 @@ public extension ContactFormQuestionView {
         let question = SurveyQuestion(
             contactFormQuestion: contactQuestion
         )
-        return ContactFormQuestionView(question: question, response: .constant(SurveyResponse()), colors: SurveyColors())
+        return ContactFormQuestionView(question: question, response: .constant(SurveyResponse()), colors: SurveyColors(), canGoNext: .constant(false))
     }
 }
 
@@ -162,3 +190,4 @@ struct ContactFormQuestionView_Previews: PreviewProvider {
             .environmentObject(SurveyService())
     }
 }
+

@@ -12,9 +12,14 @@ struct SurveyNavigationFooterView: View {
     @Binding var index: Int
     @Binding var isAnimating: Bool
     @Binding var event: SurveyEvent
+    @Binding var canGoNext: Bool
     
     private let buttonTextColor = Color.blue
     private let buttonBackgroundColor = Color.white
+    
+    public var currentQuestion: SurveyQuestion {
+        return questions[index]
+    }
     
     var body: some View {
         HStack {
@@ -37,15 +42,16 @@ struct SurveyNavigationFooterView: View {
             }
             .opacity(index > 0 ? 1 : 0)
             Spacer()
-            if index == questions.count - 1 {
-                Button(action: {
-                    event = .submit
-                }) {
-                    buttonView(label: "Submit Survey")
-                }
+            if canGoNext {
+                if index == questions.count - 1 {
+                    Button(action: {
+                        event = .submit
+                    }) {
+                        buttonView(label: "Submit Survey")
+                    }
+                } 
             }
-            
-            if index < questions.count - 1 {
+            if index < questions.count - 1 && canGoNext && currentQuestion.isRequired {
                 Button(action: {
                     event = .next
                 }) {
@@ -75,6 +81,8 @@ struct SurveyNavigationFooterView_Previews: PreviewProvider {
             questions: [SurveyQuestion(), SurveyQuestion()],
             index: .constant(1),
             isAnimating: .constant(false),
-            event: .constant(.invoke))
+            event: .constant(.invoke),
+            canGoNext: .constant(false)
+        )
     }
 }
