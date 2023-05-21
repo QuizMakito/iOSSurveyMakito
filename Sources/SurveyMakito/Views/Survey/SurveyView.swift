@@ -32,6 +32,7 @@ struct PreviewStruct: View {
     @State var index: Int = 0
     @State public var survey: Survey
     @State public var event: SurveyEvent = .invoke
+
     // TODO: Change to false at the end
     @State public var showingSheet: Bool = true
 
@@ -156,6 +157,7 @@ public struct SurveyView: View {
                 self.response = response
             }
         }
+
         .onChange(of: response) { _ in
             if response != SurveyResponse() {
                 do {
@@ -218,6 +220,5 @@ public struct SurveyView: View {
 struct SurveyView_Previews: PreviewProvider {
     static var previews: some View {
         PreviewStruct.preview
-        //            .environmentObject(SurveyService())
     }
 }

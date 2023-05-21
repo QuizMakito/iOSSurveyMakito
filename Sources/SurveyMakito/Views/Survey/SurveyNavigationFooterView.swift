@@ -23,7 +23,6 @@ struct SurveyNavigationFooterView: View {
 
     var body: some View {
         HStack {
-
             Button(action: {
                 event = .back
                 withAnimation {

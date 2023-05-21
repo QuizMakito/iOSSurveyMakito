@@ -16,6 +16,7 @@ public struct MultipleChoiceQuestionView: View {
     @Binding var response: SurveyResponse
     public let colors: SurveyColors
 
+
     public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
@@ -78,7 +79,9 @@ public struct MultipleChoiceQuestionView: View {
             )
         }
         .onChange(of: question.uid) { _ in
-            selectedIndices = response.values.compactMap({ MultipleChoiceResponse(uid: $0.value.uid, text: $0.value.value, selected: true)})
+            selectedIndices = response.values.compactMap({ 
+              MultipleChoiceResponse(uid: $0.value.uid, text: $0.value.value, selected: true)
+            })
         }
     }
 
