@@ -167,7 +167,7 @@ public struct MultipleChoiceQuestionView: View {
     private func addCustomText(for choic: MultipleChoiceResponse) {
 //        selectedIndices.append(selectedCustomChoice)
     }
-    
+
     private func toggleSelectedIndex(for selectedChoice: MultipleChoiceResponse) {
         if selectedIndices.contains(where: {$0.uid == selectedChoice.uid}) {
             selectedIndices = selectedIndices.filter { $0.uid != selectedChoice.uid}
