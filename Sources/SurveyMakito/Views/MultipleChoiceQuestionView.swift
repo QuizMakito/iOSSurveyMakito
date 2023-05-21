@@ -125,7 +125,7 @@ public struct MultipleChoiceQuestionView: View {
     }
 
     func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
-        return selectedIndices.contains(where: {$0.uid == selectedChoice.uid})
+        return selectedIndices.contains(where: {$0.text == selectedChoice.text || $0.text == selectedChoice.customTextEntry})
     }
 
     func selectChoice(_ selectedChoice: MultipleChoiceResponse, _ question: MultipleChoiceQuestion) {

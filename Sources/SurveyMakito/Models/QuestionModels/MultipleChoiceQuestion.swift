@@ -37,19 +37,22 @@ public struct MultipleChoiceResponse: Codable, Firestorable, Identifiable, Hasha
     @DefaultEmptyString public var text: String
     @DefaultFalse public var selected: Bool = false
     @DefaultFalse public var allowsCustomTextEntry: Bool
-    @DefaultEmptyString public var customTextEntry: String
+    @DefaultEmptyString public var customTextEntry: String = ""
+    @DefaultEmptyString public var customTextPlaceholder: String
 
     public init(
         uid: String? = nil,
         text: String? = nil,
         selected: Bool = false,
         allowCustomTextEntry: Bool = false,
-        customTextEntry: String? = nil
+        customTextEntry: String? = nil,
+        customTextPlaceholder: String? = nil
     ) {
         self.uid = uid ?? ""
         self.text = text ?? ""
         self.selected = selected
         self.customTextEntry = customTextEntry ?? ""
         self.allowsCustomTextEntry = allowCustomTextEntry
+        self.customTextPlaceholder = customTextPlaceholder ?? ""
     }
 }
