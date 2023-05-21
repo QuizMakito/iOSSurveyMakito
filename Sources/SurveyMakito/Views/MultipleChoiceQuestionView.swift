@@ -63,7 +63,7 @@ public struct MultipleChoiceQuestionView: View {
                                         
                                     }
                                     if choice.allowsCustomTextEntry && appearsIn(choice) {
-                                        TextField(choice.customTextEntry, text: $choice.customTextEntry, onEditingChanged: { changed in
+                                        TextField(choice.customTextPlaceholder, text: $choice.customTextEntry, onEditingChanged: { changed in
                                             focusedText = choice.uid
                                         })
                                             .textFieldStyle(.roundedBorder)
@@ -123,7 +123,7 @@ public struct MultipleChoiceQuestionView: View {
     }
 
     func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
-        return selectedIndices.contains(where: {$0.uid == selectedChoice.uid})
+        return selectedIndices.contains(where: {$0.text == selectedChoice.text || $0.text == selectedChoice.customTextEntry})
     }
 
     func selectChoice(_ selectedChoice: MultipleChoiceResponse, _ question: MultipleChoiceQuestion) {

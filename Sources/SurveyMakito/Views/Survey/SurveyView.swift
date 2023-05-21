@@ -61,6 +61,8 @@ struct PreviewStruct: View {
 }
 
 public struct SurveyView: View {
+    @State var printChecker = ""
+    
     @State public var canGoNext = false
 
     @Namespace private var namespace
@@ -126,6 +128,7 @@ public struct SurveyView: View {
     public var body: some View {
         SurveyWrap(color: .white) {
             ScrollView {
+                Text("Print: \(printChecker)")
                 if isAnimating {
                     if let questions = survey.questions {
                         stackToAnim(questions: questions)
@@ -166,6 +169,7 @@ public struct SurveyView: View {
             }
             canGoNext = !response.values.values.isEmpty
             event = .none
+            printChecker = response.values.values.compactMap({$0.value}).description
         }
         .onChange(of: event) { value in
             switch value {
