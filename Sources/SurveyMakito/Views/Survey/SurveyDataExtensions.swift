@@ -24,7 +24,7 @@ extension PreviewStruct {
                             MultipleChoiceResponse(uid: "8C3DF48E-8900-439C-940D-345CB50C30BD", text: "More games"),
                             MultipleChoiceResponse(uid: "294BBC0E-DD1B-4F2F-8539-D2D13A42E804", text: "Leaderboards"),
                             MultipleChoiceResponse(uid: "D74AA244-8159-42A0-A6A3-5F36CA60005D", text: "Play quizzes with friends"),
-                            MultipleChoiceResponse(uid: "D74AA244-8159-42A0-A6A3-5F36CA60035D", text: "Other", allowCustomTextEntry: true, customTextEntry: "Tap to edit!")
+                            MultipleChoiceResponse(uid: "D74AA244-8159-42A0-A6A3-5F36CA60035D", text: "Other", allowCustomTextEntry: true, customTextEntry: "")
                         ],
                         allowsMultipleSelection: true
                     )
