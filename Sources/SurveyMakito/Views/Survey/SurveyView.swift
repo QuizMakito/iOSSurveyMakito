@@ -32,7 +32,7 @@ struct PreviewStruct: View {
     @State var index: Int = 0
     @State public var survey: Survey
     @State public var event: SurveyEvent = .invoke
-    //TODO: Change to false at the end
+    // TODO: Change to false at the end
     @State public var showingSheet: Bool = true
 
     var body: some View {
@@ -145,7 +145,7 @@ public struct SurveyView: View {
                         SurveyNavigationFooterView(questions: questions, index: $index, isAnimating: $isAnimating, event: $event, canGoNext: $canGoNext)
                     }
                 }.padding(.bottom)
-                    .padding(15)
+                .padding(15)
             }.frame(maxWidth: .infinity)
             .background(Color(.systemGray6))
         }
@@ -156,7 +156,7 @@ public struct SurveyView: View {
                 self.response = response
             }
         }
-        .onChange(of: response) { res in
+        .onChange(of: response) { _ in
             if response != SurveyResponse() {
                 do {
                     try surveyService.addResponse(response: response)
@@ -197,7 +197,7 @@ public struct SurveyView: View {
         .navigationBarTitle("Survey", displayMode: .inline)
         .edgesIgnoringSafeArea(.bottom)
     }
-    
+
     func goNext() {
         guard let questions = survey.questions else { return }
         withAnimation {
@@ -206,7 +206,7 @@ public struct SurveyView: View {
             canGoNext = false
             response = SurveyResponse()
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             withAnimation {
                 isAnimating = false
@@ -218,6 +218,6 @@ public struct SurveyView: View {
 struct SurveyView_Previews: PreviewProvider {
     static var previews: some View {
         PreviewStruct.preview
-//            .environmentObject(SurveyService())
+        //            .environmentObject(SurveyService())
     }
 }
