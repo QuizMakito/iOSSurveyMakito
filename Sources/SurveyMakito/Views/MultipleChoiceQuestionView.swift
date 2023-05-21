@@ -78,8 +78,10 @@ public struct MultipleChoiceQuestionView: View {
                 values: values
             )
         }
-        .onChange(of: question.uid) { newValue in
-            selectedIndices = response.values.compactMap({ MultipleChoiceResponse(uid: $0.value.uid, text: $0.value.value, selected: true)})
+        .onChange(of: question.uid) { _ in
+            selectedIndices = response.values.compactMap({ 
+              MultipleChoiceResponse(uid: $0.value.uid, text: $0.value.value, selected: true)
+            })
         }
     }
 

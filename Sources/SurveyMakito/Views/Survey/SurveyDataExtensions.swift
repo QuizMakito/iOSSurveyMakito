@@ -70,6 +70,7 @@ extension PreviewStruct {
                 title: "For 15 Free Makito Tokens, signup for our news letter!",
                 tag: "rating",
                 type: .contactForm,
+                isRequired: false,
                 contactFormQuestion: ContactFormQuestion(
                     uid: "B8711AC1-28E6-471C-9D7A-588F70B2AF87",
                     required: true,
