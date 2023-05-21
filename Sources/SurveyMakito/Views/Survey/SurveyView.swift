@@ -32,7 +32,6 @@ struct PreviewStruct: View {
     @State var index: Int = 0
     @State public var survey: Survey
     @State public var event: SurveyEvent = .invoke
-
     // TODO: Change to false at the end
     @State public var showingSheet: Bool = true
 
@@ -97,18 +96,18 @@ public struct SurveyView: View {
         self.colors = colors
     }
 
-    func switchView(question: SurveyQuestion) -> some View {
-        switch question.type {
+    func switchView(question: Binding<SurveyQuestion>) -> some View {
+        switch question.wrappedValue.type {
         case .binaryChoice:
-            return AnyView(BinaryQuestionView(question: question, response: $response))
+            return AnyView(BinaryQuestionView(question: question.wrappedValue, response: $response))
         case .multipleChoiceQuestion:
             return AnyView(MultipleChoiceQuestionView(question: question, response: $response, colors: colors))
         case .inlineQuestionGroup:
-            return AnyView(InlineMultipleChoiceQuestionGroupView(question: question))
+            return AnyView(InlineMultipleChoiceQuestionGroupView(question: question.wrappedValue))
         case .contactForm:
-            return AnyView(ContactFormQuestionView(question: question, response: $response, colors: colors, canGoNext: $canGoNext))
+            return AnyView(ContactFormQuestionView(question: question.wrappedValue, response: $response, colors: colors, canGoNext: $canGoNext))
         case .commentsForm:
-            return AnyView(CommentsFormQuestionView(question: question))
+            return AnyView(CommentsFormQuestionView(question: question.wrappedValue))
         default:
             return AnyView(EmptyView())
         }
@@ -117,8 +116,8 @@ public struct SurveyView: View {
     func stackToAnim(questions: [SurveyQuestion]) -> some View {
         AnyView(
             LazyVStack(spacing: 20) {
-                if let questions = survey.questions {
-                    switchView(question: questions[index])
+                if let question = Binding<[SurveyQuestion]>($survey.questions) {
+                    switchView(question: question[index])
                 }
             }.padding()
         )
@@ -157,7 +156,6 @@ public struct SurveyView: View {
                 self.response = response
             }
         }
-
         .onChange(of: response) { _ in
             if response != SurveyResponse() {
                 do {

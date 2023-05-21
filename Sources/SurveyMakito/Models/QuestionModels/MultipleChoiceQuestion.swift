@@ -36,7 +36,7 @@ public struct MultipleChoiceResponse: Codable, Firestorable, Identifiable, Hasha
     @DefaultEmptyString public var uid: String
     @DefaultEmptyString public var text: String
     @DefaultFalse public var selected: Bool = false
-    @DefaultFalse public var allowsCustomTextEntry: Bool = false
+    @DefaultFalse public var allowsCustomTextEntry: Bool
     @DefaultEmptyString public var customTextEntry: String
 
     public init(
@@ -50,6 +50,6 @@ public struct MultipleChoiceResponse: Codable, Firestorable, Identifiable, Hasha
         self.text = text ?? ""
         self.selected = selected
         self.customTextEntry = customTextEntry ?? ""
-        self.allowsCustomTextEntry = allowsCustomTextEntry
+        self.allowsCustomTextEntry = allowCustomTextEntry
     }
 }

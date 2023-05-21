@@ -176,6 +176,7 @@ public extension ContactFormQuestionView {
         phoneNumber: "+1 (555) 555-5555",
         feedback: "This is some feedback."
     )
+
     static var example: ContactFormQuestionView {
         let question = SurveyQuestion(
             contactFormQuestion: contactQuestion

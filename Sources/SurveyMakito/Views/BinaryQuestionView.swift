@@ -82,6 +82,5 @@ struct BinaryQuestionView_Previews: PreviewProvider {
                 autoAdvanceOnChoice: true
             )
         ), response: .constant(SurveyResponse()))
-        
     }
 }
