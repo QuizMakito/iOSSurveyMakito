@@ -123,7 +123,7 @@ public struct MultipleChoiceQuestionView: View {
     }
 
     func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
-        return selectedIndices.contains(where: {$0.text == selectedChoice.text || $0.text == selectedChoice.customTextEntry})
+        return selectedIndices.contains(where: {$0.text == selectedChoice.text || ($0.text == selectedChoice.customTextEntry && selectedChoice.allowsCustomTextEntry)})
     }
 
     func selectChoice(_ selectedChoice: MultipleChoiceResponse, _ question: MultipleChoiceQuestion) {
