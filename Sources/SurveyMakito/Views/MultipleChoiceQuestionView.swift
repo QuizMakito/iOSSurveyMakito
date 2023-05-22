@@ -125,7 +125,7 @@ public struct MultipleChoiceQuestionView: View {
     }
 
     func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
-        return selectedIndices.contains(where: {$0.uid == selectedChoice.uid})
+        return selectedIndices.contains(where: {$0.text == selectedChoice.text || ($0.text == selectedChoice.customTextEntry && selectedChoice.allowsCustomTextEntry)})
     }
 
     func selectChoice(_ selectedChoice: MultipleChoiceResponse, _ question: MultipleChoiceQuestion) {
@@ -164,6 +164,14 @@ public struct MultipleChoiceQuestionView: View {
         //        selectedIndices.append(selectedCustomChoice)
     }
 
+    private func addCustomText(for choic: MultipleChoiceResponse) {
+//        selectedIndices.append(selectedCustomChoice)
+    }
+
+    private func addCustomText(for choic: MultipleChoiceResponse) {
+//        selectedIndices.append(selectedCustomChoice)
+    }
+    
     private func toggleSelectedIndex(for selectedChoice: MultipleChoiceResponse) {
         if selectedIndices.contains(where: {$0.uid == selectedChoice.uid}) {
             selectedIndices = selectedIndices.filter { $0.uid != selectedChoice.uid}
