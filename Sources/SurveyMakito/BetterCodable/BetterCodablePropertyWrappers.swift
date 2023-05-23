@@ -110,7 +110,7 @@ public struct DefaultSurveyQuestionStrategy: DefaultCodableStrategy {
 public typealias DefaultEmptySurveyQuestion = DefaultCodable<DefaultSurveyQuestionStrategy>
 
 public struct DefaultInlineMultipleChoiceQuestionGroupStrategy: DefaultCodableStrategy {
-    public static var defaultValue: [InlineMultipleChoiceQuestionGroup]? { return nil }
+    public static var defaultValue: [InlineChoiceQuestionGroup]? { return nil }
 }
 
 public typealias DefaultEmptyInlineMultipleChoiceQuestionGroup = DefaultCodable<DefaultInlineMultipleChoiceQuestionGroupStrategy>

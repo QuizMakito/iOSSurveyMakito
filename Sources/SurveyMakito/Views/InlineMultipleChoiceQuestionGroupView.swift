@@ -8,25 +8,29 @@
 import SwiftUI
 
 public struct InlineMultipleChoiceQuestionGroupView: View {
+    
+    @State var selectedIndices: [MultipleChoiceResponse] = []
+    
     @Binding var question: SurveyQuestion
     @Binding var response: SurveyResponse
     
     @EnvironmentObject var surveyService: SurveyService
-    @State var isSelected: Bool = false
     
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(question.title)
                 .font(.largeTitle)
                 .bold()
-            if let inlineChoices = Binding<[InlineMultipleChoiceQuestionGroup]>($question.inlineMultipleChoice) {
-                ForEach(inlineChoices, id: \.uid) { $inlineChoiceQuestion in
-                    VStack(alignment: .leading, spacing: 20) {
-                        if let choiceQuestions = Binding<[InlineChoiceQuestion]>($inlineChoiceQuestion.questions) {
-                            ForEach(choiceQuestions, id: \.uid) { $choice in
-                                InlineMultipleChoiceQuestionView(question: choice, isSelected: .constant(false))
+            if let inlineChoices = Binding<[InlineChoiceQuestionGroup]>($question.inlineMultipleChoice) {
+                ScrollView(showsIndicators: false) {
+                    ForEach(inlineChoices, id: \.uid) { $inlineChoiceQuestion in
+                        VStack(alignment: .leading, spacing: 20) {
+                            if let choiceQuestions = Binding<[InlineChoiceQuestion]>($inlineChoiceQuestion.questions) {
+                                ForEach(choiceQuestions, id: \.uid) { $choice in
+                                    InlineMultipleChoiceQuestionView(selectedIndices: $selectedIndices, question: choice, isSelected: .constant(false))
+                                }
                             }
-                        }
+                        }.padding(.top)
                     }
                 }
             }
@@ -39,6 +43,7 @@ public struct InlineMultipleChoiceQuestionGroupView: View {
 }
 
 public struct InlineMultipleChoiceQuestionView: View {
+    @Binding var selectedIndices: [MultipleChoiceResponse]
     let question: InlineChoiceQuestion
     @EnvironmentObject var surveyService: SurveyService
     @Binding var isSelected: Bool
@@ -47,7 +52,7 @@ public struct InlineMultipleChoiceQuestionView: View {
             Text(question.content)
                 .font(.title)
                 .fontWeight(.semibold)
-                .padding()
+                .padding(10)
             HStack(spacing: 10) {
                 ForEach(question.choices ?? []) { choice in
                     InlineMultipleChoiceButton(choice: choice, onTap: {})
@@ -63,6 +68,12 @@ public struct InlineMultipleChoiceQuestionView: View {
         )
         .cornerRadius(10)
         .padding(.horizontal)
+    }
+    
+    func selectChoice(selectedChoice: InlineChoiceResponse, question: InlineChoiceQuestion, questionGroup: InlineChoiceQuestionGroup) {
+        if selectedIndices.contains(where: {$0.uid == selectedChoice.uid}) {
+            selectedIndices = selectedIndices.filter({ $0.uid != selectedChoice.uid })
+        }
     }
 }
 
@@ -104,10 +115,11 @@ public struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
                     tag: "test",
                     type: .inlineQuestionGroup,
                     inlineMultipleChoice: [
-                        InlineMultipleChoiceQuestionGroup(
+                        InlineChoiceQuestionGroup(
                             uid: "1",
                             questions: [
                                 InlineChoiceQuestion(
+                                    uid: "2",
                                     content: "test",
                                     choices: [
                                         InlineChoiceResponse(intensity: .low),
@@ -115,13 +127,9 @@ public struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
                                         InlineChoiceResponse(intensity: .high)
                                     ]
                                 ),
-                            ]
-                        ),
-                        InlineMultipleChoiceQuestionGroup(
-                            uid: "2",
-                            questions: [
                                 InlineChoiceQuestion(
-                                    content: "test",
+                                    uid: "1",
+                                    content: "test 2",
                                     choices: [
                                         InlineChoiceResponse(intensity: .low),
                                         InlineChoiceResponse(intensity: .medium),
