@@ -13,19 +13,13 @@ import FirebaseService
 
 public struct InlineMultipleChoiceQuestionGroup: Codable, Firestorable, Hashable {
     @DefaultEmptyString public var uid: String
-    @DefaultMultipleChoiceResponse public var choices: [MultipleChoiceResponse]?
-    @DefaultFalse public var allowsMultipleSelection = false
-    @DefaultMultipleChoiceQuestion public var questions: [MultipleChoiceQuestion]?
+    @DefaultInlineChoiceQuestion public var questions: [InlineChoiceQuestion]?
 
     public init(
         uid: String? = nil,
-        choices: [MultipleChoiceResponse]? = [],
-        allowsMultipleSelection: Bool = false,
-        questions: [MultipleChoiceQuestion]? = []
+        questions: [InlineChoiceQuestion]? = []
     ) {
         self.uid = uid ?? ""
-        self.choices = choices
-        self.allowsMultipleSelection = allowsMultipleSelection
         self.questions = questions
     }
 }

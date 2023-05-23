@@ -110,7 +110,7 @@ public struct DefaultSurveyQuestionStrategy: DefaultCodableStrategy {
 public typealias DefaultEmptySurveyQuestion = DefaultCodable<DefaultSurveyQuestionStrategy>
 
 public struct DefaultInlineMultipleChoiceQuestionGroupStrategy: DefaultCodableStrategy {
-    public static var defaultValue: InlineMultipleChoiceQuestionGroup? { return nil }
+    public static var defaultValue: [InlineMultipleChoiceQuestionGroup]? { return nil }
 }
 
 public typealias DefaultEmptyInlineMultipleChoiceQuestionGroup = DefaultCodable<DefaultInlineMultipleChoiceQuestionGroupStrategy>
@@ -144,3 +144,20 @@ public typealias DefaultEmptyIsRequired = DefaultCodable<DefaultTrueStrategy>
 public struct DefaultEmptyIsRequiredStratedy: DefaultCodableStrategy {
     public static var defaultValue: Bool? { return nil }
 }
+
+public struct DefaultInlineChoiceIntensityStrategy: DefaultCodableStrategy {
+    public static var defaultValue: InlineChoiceIntensity? { return nil }
+}
+public typealias DefaultEmptyInlineChoiceIntensity = DefaultCodable<DefaultInlineChoiceIntensityStrategy>
+
+public struct DefaultInlineChoiceResponseStrategy: DefaultCodableStrategy {
+    public static var defaultValue: [InlineChoiceResponse]? { return [] }
+}
+public typealias DefaultInlineChoiceResponse = DefaultCodable<DefaultInlineChoiceResponseStrategy>
+
+public struct DefaultInlineChoiceQuestionStrategy: DefaultCodableStrategy {
+    public static var defaultValue: [InlineChoiceQuestion]? { return nil }
+}
+
+public typealias DefaultInlineChoiceQuestion = DefaultCodable<DefaultInlineChoiceQuestionStrategy>
+

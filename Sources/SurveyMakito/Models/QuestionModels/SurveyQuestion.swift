@@ -31,7 +31,7 @@ public struct SurveyQuestion: Codable, Hashable, Identifiable {
 
     // Default Inline MC
     @DefaultEmptyInlineMultipleChoiceQuestionGroup
-    public var inlineMultipleChoice: InlineMultipleChoiceQuestionGroup?
+    public var inlineMultipleChoice: [InlineMultipleChoiceQuestionGroup]?
 
     @DefaultEmptyContactFormQuestion
     public var contactFormQuestion: ContactFormQuestion?
@@ -49,7 +49,7 @@ public struct SurveyQuestion: Codable, Hashable, Identifiable {
                 surveyItemType: SurveyItemType? = .none,
                 isRequired: Bool? = nil,
                 multipleChoice: [MultipleChoiceQuestion]? = [],
-                inlineMultipleChoice: InlineMultipleChoiceQuestionGroup? = nil,
+                inlineMultipleChoice: [InlineMultipleChoiceQuestionGroup]? = [],
                 contactFormQuestion: ContactFormQuestion? = nil,
                 commentsFormQuetion: CommentsFormQuestion? = nil,
                 binaryQuestion: BinaryQuestion? = nil

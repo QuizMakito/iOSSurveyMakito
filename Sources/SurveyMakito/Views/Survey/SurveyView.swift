@@ -103,7 +103,7 @@ public struct SurveyView: View {
         case .multipleChoiceQuestion:
             return AnyView(MultipleChoiceQuestionView(question: question, response: $response, colors: colors))
         case .inlineQuestionGroup:
-            return AnyView(InlineMultipleChoiceQuestionGroupView(question: question.wrappedValue))
+            return AnyView(InlineMultipleChoiceQuestionGroupView(question: question, response: $response))
         case .contactForm:
             return AnyView(ContactFormQuestionView(question: question.wrappedValue, response: $response, colors: colors, canGoNext: $canGoNext))
         case .commentsForm:
