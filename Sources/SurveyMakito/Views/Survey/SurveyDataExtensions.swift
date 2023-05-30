@@ -12,6 +12,38 @@ extension PreviewStruct {
         uid: "5D153C45-16E5-4786-9AB5-9398B75EF98E",
         questions: [
             SurveyQuestion(
+                uid: "a",
+                title: "What new features are important to you?",
+                tag: "test",
+                type: .inlineQuestionGroup,
+                inlineMultipleChoice: [
+                    InlineChoiceQuestionGroup(
+                        uid: "1",
+                        questions: [
+                            InlineChoiceQuestion(
+                                uid: "2",
+                                content: "test",
+                                choices: [
+                                    InlineChoiceResponse(uid: "4", intensity: .low),
+                                    InlineChoiceResponse(uid: "5", intensity: .medium),
+                                    InlineChoiceResponse(uid: "6", intensity: .high)
+                                ]
+                            ),
+                            InlineChoiceQuestion(
+                                uid: "1",
+                                content: "test 2",
+                                choices: [
+                                    InlineChoiceResponse(uid: "1", intensity: .low),
+                                    InlineChoiceResponse(uid: "2", intensity: .medium),
+                                    InlineChoiceResponse(uid: "3", intensity: .high)
+                                ]
+                            ),
+                        ]
+                    )
+                ]
+            )
+            ,
+            SurveyQuestion(
                 uid: "D0A06630-056C-4B6E-B61C-E74B679162B1",
                 title: "Which of the following features would you like to use in our app?",
                 tag: "color",

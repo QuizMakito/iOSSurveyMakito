@@ -116,11 +116,6 @@ public struct MultipleChoiceQuestionView: View {
             values: values
         )
     }
-    
-    func loadIndices() {
-        guard let surveyResponse = surveyService.responses[question.uid] else { return }
-        selectedIndices = surveyService.getMultipleChoiceResponses(from: surveyResponse)
-    }
 
     func appearsIn(_ selectedChoice: MultipleChoiceResponse) -> Bool {
         return selectedIndices.contains(where: {$0.text == selectedChoice.text || ($0.text == selectedChoice.customTextEntry && selectedChoice.allowsCustomTextEntry)})

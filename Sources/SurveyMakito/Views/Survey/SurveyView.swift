@@ -95,7 +95,7 @@ public struct SurveyView: View {
         self.userId = userId
         self.colors = colors
     }
-
+    
     func switchView(question: Binding<SurveyQuestion>) -> some View {
         switch question.wrappedValue.type {
         case .binaryChoice:
@@ -149,7 +149,6 @@ public struct SurveyView: View {
             }.frame(maxWidth: .infinity)
             .background(Color(.systemGray6))
         }
-        .transition(.move(edge: .leading))
         .onChange(of: index) { _ in
             guard let question = survey.questions?[index] else { return }
             if let response = surveyService.responses[question.uid] {
