@@ -15,9 +15,9 @@ public struct MultipleChoiceQuestionView: View {
     @Binding var question: SurveyQuestion
     @Binding var response: SurveyResponse
     public let colors: SurveyColors
-    
+
     @State var focusedText = ""
-    
+
     public var body: some View {
         VStack(alignment: .leading) {
             Text(question.title)
@@ -32,7 +32,7 @@ public struct MultipleChoiceQuestionView: View {
                                     Button(action: {
                                         selectChoice(choice, multipleChoiceQuestion)
                                     }) {
-                                        
+
                                         HStack {
                                             Circle()
                                                 .fill(appearsIn(choice) ? colors.active : colors.inactive)
@@ -40,10 +40,10 @@ public struct MultipleChoiceQuestionView: View {
                                                 .padding(.leading, 20)
                                                 .overlay(
                                                     appearsIn(choice) ?
-                                                    Image(systemName: "checkmark")
+                                                        Image(systemName: "checkmark")
                                                         .foregroundColor(.white)
                                                         .padding(.leading, 20)
-                                                    : nil
+                                                        : nil
                                                 )
                                             Text(choice.text)
                                                 .font(.title3)
@@ -60,28 +60,28 @@ public struct MultipleChoiceQuestionView: View {
                                                     .stroke( appearsIn(choice) ? colors.active : colors.inactive, lineWidth: 2)
                                             }
                                         )
-                                        
+
                                     }
                                     if choice.allowsCustomTextEntry && appearsIn(choice) {
-                                        TextField(choice.customTextPlaceholder, text: $choice.customTextEntry, onEditingChanged: { changed in
+                                        TextField(choice.customTextPlaceholder, text: $choice.customTextEntry, onEditingChanged: { _ in
                                             focusedText = choice.uid
                                         })
-                                            .textFieldStyle(.roundedBorder)
-                                            .padding(12)
-                                            .padding(.top, 40)
-                                            .background(
-                                                ZStack {
-                                                    Color(.systemGray6)
-                                                    RoundedRectangle(cornerRadius: 20).stroke(Color(.systemGray3), lineWidth: 4)
-                                                }
-                                            )
-                                            .cornerRadius(20)
-                                            .offset(y: -40)
-                                            .zIndex(-1)
-                                            .transition(.move(edge: .bottom))
-                                            .animation(.default, value: appearsIn(choice))
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding(12)
+                                        .padding(.top, 40)
+                                        .background(
+                                            ZStack {
+                                                Color(.systemGray6)
+                                                RoundedRectangle(cornerRadius: 20).stroke(Color(.systemGray3), lineWidth: 4)
+                                            }
+                                        )
+                                        .cornerRadius(20)
+                                        .offset(y: -40)
+                                        .zIndex(-1)
+                                        .transition(.move(edge: .bottom))
+                                        .animation(.default, value: appearsIn(choice))
                                     }
-                                }.onChange(of: choice.customTextEntry, perform: { value in
+                                }.onChange(of: choice.customTextEntry, perform: { _ in
                                     updateCustomText(choice, multipleChoiceQuestion)
                                 })
                             }
@@ -90,7 +90,7 @@ public struct MultipleChoiceQuestionView: View {
                 }
             }
         }
-        
+
         .onChange(of: responseId) { _ in
             print(responseId)
             // choiceLookup = surveyService.getMultipleChoiceResponses(from: )
@@ -99,7 +99,7 @@ public struct MultipleChoiceQuestionView: View {
         .onChange(of: selectedIndices) { _ in
             transformIntoResponse()
         }
-        .onChange(of: question.uid) { newValue in
+        .onChange(of: question.uid) { _ in
             selectedIndices = response.values.compactMap({ MultipleChoiceResponse(uid: $0.value.uid, text: $0.value.value, selected: true)})
         }
     }
@@ -122,7 +122,7 @@ public struct MultipleChoiceQuestionView: View {
     }
 
     func selectChoice(_ selectedChoice: MultipleChoiceResponse, _ question: MultipleChoiceQuestion) {
-        
+
         if question.allowsMultipleSelection {
             toggleSelectedIndex(for: selectedChoice)
         } else {
@@ -148,15 +148,15 @@ public struct MultipleChoiceQuestionView: View {
         if selectedChoice.allowsCustomTextEntry {
             let choice = MultipleChoiceResponse(uid: selectedChoice.uid, text: selectedChoice.customTextEntry, selected: true)
             selectedIndices = [choice]
-        }else{
+        } else {
             selectedIndices = [selectedChoice]
         }
     }
 
     private func addCustomText(for choic: MultipleChoiceResponse) {
-//        selectedIndices.append(selectedCustomChoice)
+        //        selectedIndices.append(selectedCustomChoice)
     }
-    
+
     private func toggleSelectedIndex(for selectedChoice: MultipleChoiceResponse) {
         if selectedIndices.contains(where: {$0.uid == selectedChoice.uid}) {
             selectedIndices = selectedIndices.filter { $0.uid != selectedChoice.uid}
@@ -165,7 +165,7 @@ public struct MultipleChoiceQuestionView: View {
         if selectedChoice.allowsCustomTextEntry {
             let choice = MultipleChoiceResponse(uid: selectedChoice.uid, text: selectedChoice.customTextEntry, selected: true)
             selectedIndices.append(choice)
-        }else{
+        } else {
             selectedIndices.append(selectedChoice)
         }
     }

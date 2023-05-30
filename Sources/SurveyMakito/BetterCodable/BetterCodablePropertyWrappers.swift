@@ -160,4 +160,3 @@ public struct DefaultInlineChoiceQuestionStrategy: DefaultCodableStrategy {
 }
 
 public typealias DefaultInlineChoiceQuestion = DefaultCodable<DefaultInlineChoiceQuestionStrategy>
-

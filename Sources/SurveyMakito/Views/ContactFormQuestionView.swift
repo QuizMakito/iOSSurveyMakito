@@ -77,10 +77,10 @@ public struct ContactFormQuestionView: View {
     @State private var contact: Contact = Contact()
     @Binding public var response: SurveyResponse
     public let colors: SurveyColors
-    
-    @State private var isEmailValid : Bool = true
+
+    @State private var isEmailValid: Bool = true
     @Binding public var canGoNext: Bool
-    
+
     @State var emailIsFilled = false
     @State var nameIsFilled = false
 
@@ -89,7 +89,7 @@ public struct ContactFormQuestionView: View {
             Text(question.title)
                 .font(.title2)
             VStack(alignment: .leading, spacing: 20) {
-                
+
                 Text("Email Address")
                     .font(.headline)
                 TextField("Email Address", text: $emailAddress, onEditingChanged: { isChanged in
@@ -128,13 +128,13 @@ public struct ContactFormQuestionView: View {
             .onChange(of: name) { value in
                 nameIsFilled = !value.isEmpty
             }
-            .onChange(of: company) { value in }
-            .onChange(of: phoneNumber) { value in }
-            .onChange(of: feedback) { value in }
+            .onChange(of: company) { _ in }
+            .onChange(of: phoneNumber) { _ in }
+            .onChange(of: feedback) { _ in }
             .onChange(of: contact) { _ in
                 response = contact.toSurveyResponse(questionId: question.uid)
             }
-            .onChange(of: canGoNext, perform: { newValue in
+            .onChange(of: canGoNext, perform: { _ in
                 contact = contact.changing(path: \.emailAddress, to: emailAddress)
                 contact = contact.changing(path: \.name, to: name)
                 contact = contact.changing(path: \.company, to: company)
@@ -146,7 +146,7 @@ public struct ContactFormQuestionView: View {
             })
             .onChange(of: emailIsFilled, perform: { newValue in
                 canGoNext = newValue && nameIsFilled
-            }) 
+            })
             .onAppear {
                 canGoNext = false
             }
@@ -154,7 +154,7 @@ public struct ContactFormQuestionView: View {
     }
     func isValidEmail(str: String) -> Bool {
         let emailRegEx = "^(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?(?:(?:(?:[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+(?:\\.[-A-Za-z0-9!#$%&’*+/=?^_'{|}~]+)*)|(?:\"(?:(?:(?:(?: )*(?:(?:[!#-Z^-~]|\\[|\\])|(?:\\\\(?:\\t|[ -~]))))+(?: )*)|(?: )+)\"))(?:@)(?:(?:(?:[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)(?:\\.[A-Za-z0-9](?:[-A-Za-z0-9]{0,61}[A-Za-z0-9])?)*)|(?:\\[(?:(?:(?:(?:(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))\\.){3}(?:[0-9]|(?:[1-9][0-9])|(?:1[0-9][0-9])|(?:2[0-4][0-9])|(?:25[0-5]))))|(?:(?:(?: )*[!-Z^-~])*(?: )*)|(?:[Vv][0-9A-Fa-f]+\\.[-A-Za-z0-9._~!$&'()*+,;=:]+))\\])))(?:(?:(?:(?: )*(?:(?:(?:\\t| )*\\r\\n)?(?:\\t| )+))+(?: )*)|(?: )+)?$"
-        let email = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        let email = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
         let result = email.evaluate(with: str)
         return result
     }
@@ -190,4 +190,3 @@ struct ContactFormQuestionView_Previews: PreviewProvider {
             .environmentObject(SurveyService())
     }
 }
-

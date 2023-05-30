@@ -8,14 +8,14 @@
 import SwiftUI
 
 public struct InlineMultipleChoiceQuestionGroupView: View {
-    
-    @State var selectedIndices: [String:InlineChoiceResponse] = [:]
-    
+
+    @State var selectedIndices: [String: InlineChoiceResponse] = [:]
+
     @Binding var question: SurveyQuestion
     @Binding var response: SurveyResponse
-    
+
     @EnvironmentObject var surveyService: SurveyService
-    
+
     public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(question.title)
@@ -29,7 +29,7 @@ public struct InlineMultipleChoiceQuestionGroupView: View {
                                 ForEach(choiceQuestions, id: \.uid) { $choiceQuestion in
                                     InlineMultipleChoiceQuestionView(selectedIndices: $selectedIndices, question: choiceQuestion)
                                 }
-                            }  
+                            }
                         }.padding(.top)
                     }
                 }
@@ -42,12 +42,12 @@ public struct InlineMultipleChoiceQuestionGroupView: View {
         }
 
         .onAppear {
-//            response.values.forEach { key, value in
-//                selectedIndices[key] = InlineChoiceResponse(uid: value.uid, text: value.value)
-//            }
+            //            response.values.forEach { key, value in
+            //                selectedIndices[key] = InlineChoiceResponse(uid: value.uid, text: value.value)
+            //            }
         }
     }
-    
+
     func transformIntoResponse() {
         let values = selectedIndices.reduce(into: [:]) { result, response in
             result[response.key] = Failable(value: response.value.text)
@@ -63,7 +63,7 @@ public struct InlineMultipleChoiceQuestionGroupView: View {
 }
 
 public struct InlineMultipleChoiceQuestionView: View {
-    @Binding var selectedIndices: [String:InlineChoiceResponse]
+    @Binding var selectedIndices: [String: InlineChoiceResponse]
     let question: InlineChoiceQuestion
     @EnvironmentObject var surveyService: SurveyService
     public var body: some View {
@@ -90,30 +90,29 @@ public struct InlineMultipleChoiceQuestionView: View {
         .cornerRadius(10)
         .padding(.horizontal)
     }
-    
+
     func selectChoice(selectedChoice: InlineChoiceResponse, question: InlineChoiceQuestion) {
         selectedIndices[question.uid] = selectedChoice
     }
-    
+
     func appearsIn(_ selectedChoice: InlineChoiceResponse, _ question: InlineChoiceQuestion) -> InlineChoiceResponseState {
-//        if !selectedIndices.contains(where: {$0.key == question.uid}) {
-//            return .none
-//        } else {
-            if selectedIndices.contains(where: {$0.value.uid == selectedChoice.uid}) {
-                return .selected
-            } else {
-                return .notSelected
-            }
-//        }
+        //        if !selectedIndices.contains(where: {$0.key == question.uid}) {
+        //            return .none
+        //        } else {
+        if selectedIndices.contains(where: {$0.value.uid == selectedChoice.uid}) {
+            return .selected
+        } else {
+            return .notSelected
+        }
+        //        }
     }
 }
-
 
 enum InlineChoiceResponseState {
     case selected
     case notSelected
     case none
-    
+
     var fontWeight: Font.Weight {
         switch self {
         case .selected:
@@ -124,7 +123,7 @@ enum InlineChoiceResponseState {
             return .regular
         }
     }
-    
+
     func bgColor(_ intensity: InlineChoiceIntensity) -> Color {
         switch self {
         case .selected:
@@ -135,7 +134,7 @@ enum InlineChoiceResponseState {
             return intensity.color.opacity(0.15)
         }
     }
-    
+
     func strokeColor(_ intensity: InlineChoiceIntensity) -> Color {
         switch self {
         case .selected:
@@ -155,7 +154,7 @@ public struct InlineMultipleChoiceButton: View {
         choice.intensity ?? .none
     }
     let state: InlineChoiceResponseState
-    
+
     public var body: some View {
         Button(action: { onTap() }) {
             Text(choice.text)
@@ -178,41 +177,41 @@ public struct InlineMultipleChoiceButton: View {
 
 public struct InlineMultipleChoiceQuestionGroupView_Previews: PreviewProvider {
     public static var previews: some View {
-                PreviewStruct.preview
-//        InlineMultipleChoiceQuestionGroupView(
-//            question: .constant(
-//                SurveyQuestion(
-//                    uid: "a",
-//                    title: "What new features are important to you?",
-//                    tag: "test",
-//                    type: .inlineQuestionGroup,
-//                    inlineMultipleChoice: [
-//                        InlineChoiceQuestionGroup(
-//                            uid: "1",
-//                            questions: [
-//                                InlineChoiceQuestion(
-//                                    uid: "2",
-//                                    content: "test",
-//                                    choices: [
-//                                        InlineChoiceResponse(uid: "4", intensity: .low),
-//                                        InlineChoiceResponse(uid: "5", intensity: .medium),
-//                                        InlineChoiceResponse(uid: "6", intensity: .high)
-//                                    ]
-//                                ),
-//                                InlineChoiceQuestion(
-//                                    uid: "1",
-//                                    content: "test 2",
-//                                    choices: [
-//                                        InlineChoiceResponse(uid: "1", intensity: .low),
-//                                        InlineChoiceResponse(uid: "2", intensity: .medium),
-//                                        InlineChoiceResponse(uid: "3", intensity: .high)
-//                                    ]
-//                                ),
-//                            ]
-//                        )
-//                    ]
-//                )),
-//            response: .constant(SurveyResponse())
-//        )
+        PreviewStruct.preview
+        //        InlineMultipleChoiceQuestionGroupView(
+        //            question: .constant(
+        //                SurveyQuestion(
+        //                    uid: "a",
+        //                    title: "What new features are important to you?",
+        //                    tag: "test",
+        //                    type: .inlineQuestionGroup,
+        //                    inlineMultipleChoice: [
+        //                        InlineChoiceQuestionGroup(
+        //                            uid: "1",
+        //                            questions: [
+        //                                InlineChoiceQuestion(
+        //                                    uid: "2",
+        //                                    content: "test",
+        //                                    choices: [
+        //                                        InlineChoiceResponse(uid: "4", intensity: .low),
+        //                                        InlineChoiceResponse(uid: "5", intensity: .medium),
+        //                                        InlineChoiceResponse(uid: "6", intensity: .high)
+        //                                    ]
+        //                                ),
+        //                                InlineChoiceQuestion(
+        //                                    uid: "1",
+        //                                    content: "test 2",
+        //                                    choices: [
+        //                                        InlineChoiceResponse(uid: "1", intensity: .low),
+        //                                        InlineChoiceResponse(uid: "2", intensity: .medium),
+        //                                        InlineChoiceResponse(uid: "3", intensity: .high)
+        //                                    ]
+        //                                ),
+        //                            ]
+        //                        )
+        //                    ]
+        //                )),
+        //            response: .constant(SurveyResponse())
+        //        )
     }
 }

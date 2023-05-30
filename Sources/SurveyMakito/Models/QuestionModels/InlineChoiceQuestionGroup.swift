@@ -24,7 +24,6 @@ public struct InlineChoiceQuestionGroup: Codable, Firestorable, Hashable {
     }
 }
 
-
 public struct InlineChoiceQuestion: Codable, Firestorable, Identifiable, Hashable {
     public var id: String = UUID().uuidString
     @DefaultEmptyString public var uid: String
@@ -62,4 +61,3 @@ public struct InlineChoiceResponse: Codable, Firestorable, Identifiable, Hashabl
         self.intensity = intensity
     }
 }
-

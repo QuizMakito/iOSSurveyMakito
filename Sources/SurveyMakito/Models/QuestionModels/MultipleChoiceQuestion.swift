@@ -62,7 +62,7 @@ public enum InlineChoiceIntensity: Int, Codable {
     case medium
     case high
     case none
-    
+
     var color: Color {
         switch self {
         case .low:
@@ -75,7 +75,7 @@ public enum InlineChoiceIntensity: Int, Codable {
             return .clear
         }
     }
-    
+
     var text: String {
         switch self {
         case .low:

@@ -47,33 +47,33 @@ final class SurveyTests: XCTestCase {
         feedback: "This is some feedback."
     )
 
-//    let inlineMultipleChoiceQuestionGroup1 = InlineMultipleChoiceQuestionGroup(
-//        uid: "004",
-//        choices: [
-//            InlineChoiceResponse(uid: "004a", text: "Option A"),
-//            InlineChoiceResponse(uid: "004b", text: "Option B"),
-//            InlineChoiceResponse(uid: "004c", text: "Option C")
-//        ],
-//        allowsMultipleSelection: true,
-//        questions: [
-//            InlineChoiceQuestion(
-//                uid: "004a",
-//                choices: [
-//                    InlineChoiceResponse(uid: "004aa", text: "Option A1"),
-//                    InlineChoiceResponse(uid: "004ab", text: "Option A2"),
-//                    InlineChoiceResponse(uid: "004ac", text: "Option A3")
-//                ]
-//            ),
-//            InlineChoiceQuestion(
-//                uid: "004b",
-//                choices: [
-//                    InlineChoiceResponse(uid: "004ba", text: "Option B1"),
-//                    InlineChoiceResponse(uid: "004bb", text: "Option B2"),
-//                    InlineChoiceResponse(uid: "004bc", text: "Option B3")
-//                ]
-//            )
-//        ]
-//    )
+    //    let inlineMultipleChoiceQuestionGroup1 = InlineMultipleChoiceQuestionGroup(
+    //        uid: "004",
+    //        choices: [
+    //            InlineChoiceResponse(uid: "004a", text: "Option A"),
+    //            InlineChoiceResponse(uid: "004b", text: "Option B"),
+    //            InlineChoiceResponse(uid: "004c", text: "Option C")
+    //        ],
+    //        allowsMultipleSelection: true,
+    //        questions: [
+    //            InlineChoiceQuestion(
+    //                uid: "004a",
+    //                choices: [
+    //                    InlineChoiceResponse(uid: "004aa", text: "Option A1"),
+    //                    InlineChoiceResponse(uid: "004ab", text: "Option A2"),
+    //                    InlineChoiceResponse(uid: "004ac", text: "Option A3")
+    //                ]
+    //            ),
+    //            InlineChoiceQuestion(
+    //                uid: "004b",
+    //                choices: [
+    //                    InlineChoiceResponse(uid: "004ba", text: "Option B1"),
+    //                    InlineChoiceResponse(uid: "004bb", text: "Option B2"),
+    //                    InlineChoiceResponse(uid: "004bc", text: "Option B3")
+    //                ]
+    //            )
+    //        ]
+    //    )
 
     let commentsFormQuestion1 = CommentsFormQuestion(
         uid: "005",
@@ -121,33 +121,33 @@ final class SurveyTests: XCTestCase {
                     )
                 ]
             ),
-//            SurveyQuestion(
-//                uid: "q3",
-//                title: "What's your age range?",
-//                tag: "age",
-//                type: .inlineQuestionGroup,
-//                inlineMultipleChoice: InlineMultipleChoiceQuestionGroup(
-//                    uid: "imc1",
-//                    choices: [
-//                        InlineChoiceResponse(uid: "18-24", text: "18-24"),
-//                        InlineChoiceResponse(uid: "25-34", text: "25-34"),
-//                        InlineChoiceResponse(uid: "35-44", text: "35-44"),
-//                        InlineChoiceResponse(uid: "45-54", text: "45-54"),
-//                        InlineChoiceResponse(uid: "55-64", text: "55-64"),
-//                        InlineChoiceResponse(uid: "65+", text: "65+")
-//                    ],
-//                    questions: [
-//                        InlineChoiceQuestion(
-//                            uid: "mc2",
-//                            choices: [
-//                                InlineChoiceResponse(uid: "male", text: "Male"),
-//                                InlineChoiceResponse(uid: "female", text: "Female"),
-//                                InlineChoiceResponse(uid: "nonbinary", text: "Non-binary")
-//                            ]
-//                        )
-//                    ]
-//                )
-//            ),
+            //            SurveyQuestion(
+            //                uid: "q3",
+            //                title: "What's your age range?",
+            //                tag: "age",
+            //                type: .inlineQuestionGroup,
+            //                inlineMultipleChoice: InlineMultipleChoiceQuestionGroup(
+            //                    uid: "imc1",
+            //                    choices: [
+            //                        InlineChoiceResponse(uid: "18-24", text: "18-24"),
+            //                        InlineChoiceResponse(uid: "25-34", text: "25-34"),
+            //                        InlineChoiceResponse(uid: "35-44", text: "35-44"),
+            //                        InlineChoiceResponse(uid: "45-54", text: "45-54"),
+            //                        InlineChoiceResponse(uid: "55-64", text: "55-64"),
+            //                        InlineChoiceResponse(uid: "65+", text: "65+")
+            //                    ],
+            //                    questions: [
+            //                        InlineChoiceQuestion(
+            //                            uid: "mc2",
+            //                            choices: [
+            //                                InlineChoiceResponse(uid: "male", text: "Male"),
+            //                                InlineChoiceResponse(uid: "female", text: "Female"),
+            //                                InlineChoiceResponse(uid: "nonbinary", text: "Non-binary")
+            //                            ]
+            //                        )
+            //                    ]
+            //                )
+            //            ),
             SurveyQuestion(
                 uid: "q4",
                 title: "How would you rate your experience with our app?",

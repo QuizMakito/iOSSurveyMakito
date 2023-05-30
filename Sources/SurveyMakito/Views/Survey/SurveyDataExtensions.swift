@@ -37,7 +37,7 @@ extension PreviewStruct {
                                     InlineChoiceResponse(uid: "2", intensity: .medium),
                                     InlineChoiceResponse(uid: "3", intensity: .high)
                                 ]
-                            ),
+                            )
                         ]
                     )
                 ]
